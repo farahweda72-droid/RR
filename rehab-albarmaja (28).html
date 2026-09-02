@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>رحاب البرمجة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0a0c16;
+    --bg-1:#10131f;
+    --card:#151a2c;
+    --card-2:#1a2036;
+    --border:#262c46;
+    --border-soft:#333c5f;
+    --text-main:#f5f7fd;
+    --text-sub:#9298b3;
+    --text-dim:#666d8c;
+    --ok:#3ddc97;
+    --bad:#ff6b6b;
+    --radius-lg:24px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    /* default accent before a language is picked */
+    --c1:#5b86e5;
+    --c2:#36d1dc;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(900px 500px at 8% -8%, rgba(91,134,229,0.14), transparent 55%),
+      radial-gradient(800px 480px at 95% 5%, rgba(255,152,32,0.10), transparent 55%),
+      radial-gradient(760px 460px at 50% 105%, rgba(168,85,247,0.10), transparent 55%),
+      var(--bg-0);
+    color:var(--text-main);
+    font-family:'Tajawal',sans-serif;
+    min-height:100vh;
+    padding:52px 20px 90px;
+    overflow-x:hidden;
+  }
+  .page{max-width:1180px;margin:0 auto;}
+
+  /* hero */
+  .hero{text-align:center;margin-bottom:44px;}
+  .hero .brand-badge{
+    display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);
+    border-radius:30px;padding:6px 16px;font-size:12.5px;font-weight:700;color:var(--text-sub);margin-bottom:18px;
+  }
+  .hero .brand-badge span.dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(90deg,#5b86e5,#f89820,#ffd43b);}
+  .hero h1{
+    font-size:clamp(30px,4.6vw,48px);
+    font-weight:900;
+    margin:0 0 14px;
+    letter-spacing:-0.5px;
+    background:linear-gradient(90deg,#36d1dc,#5b86e5,#a855f7,#f89820,#ffd43b,#36d1dc);
+    background-size:250% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shimmer 8s linear infinite;
+  }
+  @keyframes shimmer{ to{ background-position:250% center; } }
+  .hero p.subtitle{
+    color:var(--text-sub);
+    font-size:16px;
+    font-weight:500;
+    margin:0;
+    max-width:560px;
+    margin-inline:auto;
+    line-height:1.8;
+  }
+
+  /* language grid */
+  .lang-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:14px;
+  }
+  .lang-card{
+    position:relative;overflow:hidden;
+    background:linear-gradient(160deg,var(--card-2),var(--card));
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-lg);
+    padding:40px 14px 28px;
+    text-align:center;
+    cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .lang-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:5px;
+    background:linear-gradient(90deg,var(--lc1),var(--lc2));
+  }
+  .lang-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--border-soft);
+    box-shadow:0 14px 32px -14px color-mix(in srgb, var(--lc1) 55%, transparent);
+  }
+  .lang-icon{
+    width:64px;height:64px;margin:0 auto 16px;border-radius:50%;
+    background:linear-gradient(135deg,var(--lc1),var(--lc2));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 22px -8px color-mix(in srgb, var(--lc1) 60%, transparent);
+  }
+  .lang-icon svg{width:32px;height:32px;}
+  .lang-card .lang-label{
+    font-size:20px;
+    font-weight:800;
+    unicode-bidi:isolate;
+    direction:ltr;
+    display:inline-block;
+  }
+  .lang-card.active{
+    border-color:var(--lc1);
+    box-shadow:0 0 0 1.5px var(--lc1), 0 0 30px color-mix(in srgb, var(--lc1) 45%, transparent);
+  }
+  .lang-card.active .lang-label{
+    background:linear-gradient(90deg,var(--lc1),var(--lc2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* tools */
+  .tools-section{margin-top:38px;}
+  .tools-caption{
+    text-align:center;color:var(--text-dim);font-size:14px;font-weight:500;margin-bottom:16px;
+  }
+  .tools-caption b{color:var(--c1);font-weight:800;}
+  .tools-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+  .tool-btn{
+    background:var(--card);
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:20px 10px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    cursor:pointer;
+    color:var(--text-sub);
+    transition:all .16s ease;
+    font-family:inherit;
+  }
+  .tool-btn svg{width:26px;height:26px;stroke:var(--text-sub);transition:stroke .16s ease;}
+  .tool-btn span{font-weight:700;font-size:15px;}
+  .tool-btn:hover{border-color:var(--border-soft);color:var(--text-main);}
+  .tool-btn:hover svg{stroke:var(--text-main);}
+  .tool-btn.active{
+    border-color:var(--c1);
+    background:linear-gradient(160deg,color-mix(in srgb,var(--c1) 16%,transparent),transparent);
+    color:var(--c2);
+    box-shadow:0 0 20px color-mix(in srgb,var(--c1) 22%,transparent);
+  }
+  .tool-btn.active svg{stroke:var(--c2);}
+
+  /* content area */
+  .content-area{margin-top:34px;}
+  .panel-title{
+    font-size:20px;font-weight:800;margin:0 0 4px;
+  }
+  .panel-title .accent{color:var(--c1);}
+  .panel-sub{color:var(--text-dim);font-size:14px;margin:0 0 22px;}
+
+  /* videos */
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+  }
+  .video-card{
+    background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);
+    overflow:hidden;display:block;text-decoration:none;color:inherit;transition:border-color .15s, transform .15s;
+  }
+  .video-card:hover{border-color:var(--c1);transform:translateY(-2px);}
+  .video-card .thumb-wrap{position:relative;padding-top:56.25%;background:linear-gradient(135deg,var(--c1),var(--c2));overflow:hidden;}
+  .video-card .thumb-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .video-card .play-badge{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.35));
+  }
+  .video-card .play-badge svg{
+    width:56px;height:56px;fill:rgba(255,255,255,0.92);filter:drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+    transition:transform .15s;
+  }
+  .video-card:hover .play-badge svg{transform:scale(1.08);fill:var(--c1);}
+  .video-card .v-title{padding:14px 16px;font-weight:700;font-size:14.5px;line-height:1.5;}
+  .video-card .v-open{padding:0 16px 14px;font-size:12.5px;color:var(--text-dim);font-weight:600;}
+
+  /* summary */
+  .summary-pager{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .summary-pager button{
+    background:var(--bg-1);border:1px solid var(--border);border-radius:20px;padding:7px 15px;
+    font-size:12.5px;font-weight:700;color:var(--text-sub);cursor:pointer;font-family:inherit;
+    transition:all .15s;
+  }
+  .summary-pager button:hover{border-color:var(--border-soft);color:var(--text-main);}
+  .summary-pager button.active{
+    border-color:var(--c1);
+    background:linear-gradient(160deg,color-mix(in srgb,var(--c1) 18%,transparent),transparent);
+    color:var(--c2);
+  }
+  .summary-card{
+    background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);
+    padding:32px;line-height:2;font-size:15.5px;color:#dfe3ef;min-height:200px;
+  }
+  .summary-card h4{
+    color:var(--c2);font-size:17px;font-weight:800;margin:22px 0 10px;
+  }
+  .summary-card h4:first-child{margin-top:0;}
+  .summary-card ul{margin:0 0 8px;padding-inline-start:22px;}
+  .summary-card li{margin-bottom:6px;}
+  .summary-card p{margin:0 0 10px;}
+  .summary-card pre{
+    background:#090c17;border:1px solid var(--border-soft);border-radius:10px;padding:16px 18px;
+    overflow-x:auto;direction:ltr;text-align:left;margin:10px 0 16px;line-height:1.7;
+  }
+  .summary-card pre code{background:none;padding:0;font-family:'Courier New',monospace;font-size:13.8px;color:#c9e8ff;}
+  .summary-card code{
+    background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:6px;
+    font-family:'Courier New',monospace;direction:ltr;display:inline-block;font-size:14px;color:var(--c2);
+  }
+  .summary-card .note{
+    background:color-mix(in srgb,var(--c1) 10%,transparent);border-right:3px solid var(--c1);border-radius:8px;
+    padding:12px 16px;margin:12px 0;font-size:14.5px;color:#e9edf7;
+  }
+  .summary-nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:12px;flex-wrap:wrap;}
+  .summary-nav button{
+    background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:11px 22px;
+    font-weight:800;font-family:inherit;font-size:14px;color:var(--text-main);cursor:pointer;transition:all .15s;
+  }
+  .summary-nav button:hover:not(:disabled){border-color:var(--c1);color:var(--c2);}
+  .summary-nav button:disabled{opacity:.35;cursor:not-allowed;}
+  .summary-nav .page-indicator{color:var(--text-dim);font-size:13px;font-weight:700;white-space:nowrap;}
+
+  /* Q&A */
+  .qa-list{display:flex;flex-direction:column;gap:16px;}
+  .qa-card{
+    background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);
+    padding:26px 28px;transition:border-color .15s;
+  }
+  .qa-card:hover{border-color:var(--border-soft);}
+  .qa-question{
+    font-size:16.5px;font-weight:800;line-height:1.85;margin-bottom:16px;
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .qa-number{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(135deg,var(--c1),var(--c2));color:#0a0c16;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;
+    margin-inline-start:12px;
+  }
+  .qa-toggle-btn{
+    background:transparent;border:1.5px solid var(--c1);color:var(--c2);border-radius:10px;
+    padding:9px 20px;font-weight:700;font-family:inherit;font-size:13.5px;cursor:pointer;
+    transition:all .15s;
+  }
+  .qa-toggle-btn:hover{background:color-mix(in srgb,var(--c1) 14%,transparent);}
+  .qa-solution{display:none;margin-top:16px;}
+  .qa-solution.show{display:block;}
+  .qa-solution pre{
+    background:#090c17;border:1px solid var(--border-soft);border-radius:10px;padding:16px 18px;
+    overflow-x:auto;direction:ltr;text-align:left;margin:0;line-height:1.7;
+  }
+  .qa-solution pre code{background:none;padding:0;font-family:'Courier New',monospace;font-size:13.8px;color:#c9e8ff;}
+
+  /* quiz */
+  .quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:32px;}
+  .quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px;}
+  .quiz-progress .bar{flex:1;height:6px;background:var(--bg-0);border-radius:6px;overflow:hidden;}
+  .quiz-progress .bar-fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .25s ease;}
+  .quiz-progress .count{font-size:13px;color:var(--text-dim);font-weight:700;white-space:nowrap;}
+  .quiz-question{font-size:18.5px;font-weight:800;margin:0 0 22px;line-height:1.7;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-opt{
+    text-align:right;background:var(--bg-1);border:1.5px solid var(--border);border-radius:12px;
+    padding:14px 18px;font-family:inherit;font-size:15px;color:var(--text-main);cursor:pointer;
+    transition:all .15s;line-height:1.6;
+  }
+  .quiz-opt:hover:not(.locked){border-color:var(--border-soft);background:var(--card-2);}
+  .quiz-opt.correct{border-color:var(--ok);background:rgba(61,220,151,0.10);color:var(--ok);}
+  .quiz-opt.wrong{border-color:var(--bad);background:rgba(255,107,107,0.10);color:var(--bad);}
+  .quiz-opt.locked{cursor:default;}
+  .quiz-explain{
+    margin-top:20px;padding:16px 18px;background:var(--bg-1);border-right:3px solid var(--c1);
+    border-radius:10px;font-size:14.5px;line-height:1.9;color:#dfe3ef;display:none;
+  }
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:24px;}
+  .quiz-next{
+    background:linear-gradient(135deg,var(--c1),var(--c2));color:#0a0c16;border:none;border-radius:12px;padding:12px 28px;
+    font-weight:800;font-family:inherit;font-size:15px;cursor:pointer;display:none;
+  }
+  .quiz-result{text-align:center;padding:20px 0;}
+  .quiz-result .score{font-size:52px;font-weight:900;background:linear-gradient(90deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0;}
+  .quiz-result p{color:var(--text-sub);font-size:15px;margin:6px 0 26px;}
+  .quiz-retry{
+    background:transparent;color:var(--c2);border:1.5px solid var(--c1);border-radius:12px;
+    padding:12px 26px;font-weight:800;font-family:inherit;font-size:15px;cursor:pointer;
+  }
+
+  @media (max-width:820px){
+    .lang-grid{grid-template-columns:repeat(2,1fr);}
+    .tools-grid{grid-template-columns:repeat(2,1fr);}
+    .video-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:480px){
+    body{padding:36px 12px 60px;}
+    .hero{margin-bottom:32px;}
+    .lang-grid{gap:12px;}
+    .lang-card{padding:26px 8px 20px;border-radius:18px;}
+    .lang-icon{width:52px;height:52px;margin-bottom:12px;}
+    .lang-icon svg{width:26px;height:26px;}
+    .lang-card .lang-label{font-size:17px;}
+    .tools-grid{gap:10px;}
+    .tool-btn{padding:16px 6px;}
+    .tool-btn span{font-size:13.5px;}
+    .quiz-card,.summary-card,.qa-card{padding:18px;}
+    .quiz-question{font-size:16.5px;}
+    .quiz-opt{padding:12px 14px;font-size:14px;}
+    .qa-question{font-size:15px;}
+    .summary-nav{justify-content:center;}
+    .summary-nav .page-indicator{width:100%;text-align:center;order:3;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div class="brand-badge"><span class="dot"></span> منصّة تعليمية تفاعلية</div>
+    <h1>رحاب البرمجة</h1>
+    <p class="subtitle">اختر لغة البرمجة التي تريد إتقانها، وابدأ رحلتك من أول سطر كود وحتى احتراف الأساسيات — فيديوهات، ملخصات، نقاش مباشر مع الذكاء الاصطناعي، واختبارات شاملة</p>
+  </header>
+
+  <section class="lang-grid" id="langGrid"></section>
+
+  <section class="tools-section" id="toolsSection" hidden>
+    <p class="tools-caption">اختر ما تريد استكشافه في لغة <b id="toolsCaptionLang"></b></p>
+    <div class="tools-grid" id="toolsGrid"></div>
+  </section>
+
+  <section class="content-area" id="contentArea"></section>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------
+   DATA
+--------------------------------------------------------- */
+const LANGUAGES = [
+  { key:'python', label:'Python', c1:'#3776ab', c2:'#ffd43b',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8c0-2.2 2-3.5 4.3-3.5S14 5.8 14 8s-1.1 2.7-3.2 2.7H8.2c-2.1 0-3.2 1.6-3.2 3.3s1.1 3.5 4.3 3.5S13 16.2 13 14"/><circle cx="8" cy="6.8" r="0.6" fill="white" stroke="none"/></svg>' },
+  { key:'java', label:'Java', c1:'#f89820', c2:'#ff5f6d',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 10h11v5a3 3 0 0 1-3 3h-5a3 3 0 0 1-3-3v-5z"/><path d="M16.5 11h1.3a2 2 0 0 1 0 4h-1.3"/><path d="M9 3c-1 1-1 2 0 3M13 3c-1 1-1 2 0 3"/></svg>' },
+  { key:'c', label:'C', c1:'#5b86e5', c2:'#36d1dc',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 7.2a5.3 5.3 0 1 0 0 9.6"/></svg>' },
+  { key:'cpp', label:'C++', c1:'#6a11cb', c2:'#2575fc',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.6 7.2a5.3 5.3 0 1 0 0 9.6"/><path d="M17.5 10.2v3M16 11.7h3M20.7 10.2v3M19.2 11.7h3"/></svg>' },
+];
+
+const TOOLS = [
+  { key:'videos',  label:'فيديوهات',    icon:'play'  },
+  { key:'summary', label:'تلخيصات',     icon:'doc'   },
+  { key:'qa',      label:'سؤال وجواب',  icon:'qa'    },
+  { key:'quiz',    label:'اختبار',      icon:'check' },
+];
+
+const ICONS = {
+  play:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7M8.5 9.5h3"/></svg>',
+  qa:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.2a2.7 2.7 0 0 1 5.2 1c0 1.8-2.7 2.1-2.7 3.8"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+};
+
+const CONTENT = {
+  python:{
+    name:'Python',
+    videos:[
+      {id:'Do34NKMq80c', title:'تعلم بايثون من الصفر إلى الاحتراف — كورس كامل'},
+      {id:'o3paqBstP9Y', title:'كورس بايثون كامل للمبتدئين — 12 ساعة مجانية'},
+      {id:'MWbucf-IgSI', title:'تعلم بايثون: المشروع الأول وتهيئة بيئة العمل'},
+      {id:'37YPyDx7Zj8', title:'تعلم بايثون من الصفر — مسار متكامل للأساسيات'},
+    ],
+    summaryPages:[
+      { title:'مقدمة والانطلاقة', body:`
+        <h4>ما هي لغة بايثون؟</h4>
+        <p>Python لغة برمجة عالية المستوى، سهلة القراءة، صممها جيدو فان روسوم عام 1991م. تشتهر ببساطة صياغتها القريبة من اللغة الإنجليزية الطبيعية، ما يجعلها من أفضل اللغات لتعلّم البرمجة من الصفر، وفي الوقت نفسه هي لغة احترافية تُستخدم في أكبر شركات التقنية بالعالم.</p>
+        <p>بايثون لغة <b>ديناميكية الكتابة (Dynamically Typed)</b> — لا حاجة لتحديد نوع المتغير عند تعريفه، فالمفسّر (Interpreter) يحدد النوع تلقائيًا من القيمة، وتعتمد على المسافات البادئة (Indentation) بدل الأقواس {} لتحديد الكتل البرمجية.</p>
+        <h4>بنية أول برنامج</h4>
+        <pre><code>print("مرحبًا بالعالم")</code></pre>
+        <p>لا حاجة لدالة main ولا لكلاسات ولا لفاصلة منقوطة في نهاية كل سطر — سطر واحد بسيط كافٍ لتشغيل أول برنامج، وهذا أحد أسباب شهرة بايثون كلغة بداية مثالية.</p>
+      `},
+      { title:'المتغيرات والإدخال والإخراج', body:`
+        <h4>المتغيرات وأنواع البيانات</h4>
+        <pre><code>age = 25            # int
+price = 19.99       # float
+is_active = True    # bool
+name = "أحمد"        # str</code></pre>
+        <p>لا حاجة لكتابة نوع المتغير؛ فكتابة age = 25 كافية لإنشاء متغير من نوع int، ويمكن لاحقًا إعادة إسناد age = "نص" وسيتغيّر نوعه تلقائيًا دون أي خطأ من المفسّر.</p>
+        <h4>الإدخال والإخراج</h4>
+        <pre><code>name = input("أدخل اسمك: ")
+print("أهلًا بك", name)
+print(f"أهلًا بك {name}")  # f-string لتضمين المتغيرات مباشرة</code></pre>
+        <p>input() تعرض رسالة وتنتظر إدخال المستخدم، وتُرجع دائمًا نصًا (str) حتى لو أدخل المستخدم رقمًا، لذا يجب تحويله بـ int() أو float() عند الحاجة لإجراء عمليات حسابية عليه.</p>
+      `},
+      { title:'الجمل الشرطية والحلقات', body:`
+        <h4>الجمل الشرطية</h4>
+        <pre><code>score = 75
+if score &gt;= 90:
+    print("ممتاز")
+elif score &gt;= 60:
+    print("ناجح")
+else:
+    print("راسب")</code></pre>
+        <p>لاحظ عدم وجود أقواس {} إطلاقًا؛ فالمسافة البادئة (عادة 4 مسافات) هي التي تحدد أن السطر تابع لكتلة if، وهذا إلزامي في بايثون وليس مجرد تنسيق اختياري.</p>
+        <h4>الحلقات التكرارية</h4>
+        <pre><code># حلقة for: تمر على عناصر تسلسل مباشرة
+for i in range(1, 6):
+    print("التكرار رقم", i)
+
+# حلقة while
+count = 0
+while count &lt; 3:
+    print("count =", count)
+    count += 1</code></pre>
+        <p>range(1, 6) تولّد الأعداد من 1 حتى 5 (بدون تضمين 6)، وحلقة for في بايثون تدور غالبًا على عناصر تسلسل (قائمة، نص، range) مباشرة دون الحاجة لعداد يدوي.</p>
+      `},
+      { title:'الدوال والقوائم', body:`
+        <h4>الدوال</h4>
+        <pre><code>def square(x):
+    return x ** 2
+
+result = square(5)  # result = 25</code></pre>
+        <p>def تعرّف دالة جديدة، ولا حاجة لتحديد نوع المُدخل x أو نوع القيمة المُرجعة. العامل ** يُستخدم للأس (القوة)، فـ x ** 2 يعني x تربيع.</p>
+        <h4>القوائم وList Comprehension</h4>
+        <pre><code>numbers = [10, 20, 30, 40]
+numbers.append(50)
+print(numbers[0])     # 10
+print(len(numbers))   # 5
+
+squares = [x**2 for x in range(5)]
+print(squares)  # [0, 1, 4, 9, 16]</code></pre>
+        <p>القائمة (list) في بايثون مرنة الحجم تلقائيًا دون تحديد سعتها مسبقًا. أما list comprehension فهي صياغة مختصرة وقوية لإنشاء قائمة جديدة من تسلسل آخر في سطر واحد.</p>
+      `},
+      { title:'القواميس والبرمجة كائنية التوجه', body:`
+        <h4>القواميس (Dictionaries)</h4>
+        <pre><code>student = {"name": "سارة", "age": 20, "gpa": 3.8}
+print(student["name"])   # سارة
+student["age"] = 21      # تعديل قيمة
+
+for key, value in student.items():
+    print(key, ":", value)</code></pre>
+        <p>القاموس يخزّن بيانات على شكل أزواج مفتاح-قيمة، ويسمح بالوصول المباشر للقيمة عبر مفتاحها بدل البحث عن فهرس رقمي كما في القوائم.</p>
+        <h4>البرمجة كائنية التوجه</h4>
+        <pre><code>class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def make_sound(self):
+        print(self.name, "يصدر صوتًا")
+
+class Dog(Animal):
+    def make_sound(self):
+        print(self.name, "ينبح")
+
+a = Dog("ريكس")
+a.make_sound()  # ريكس ينبح</code></pre>
+        <p>__init__ هو الباني الذي يُستدعى تلقائيًا عند إنشاء كائن جديد، وself يشير دائمًا إلى الكائن الحالي نفسه. class Dog(Animal) تجعل Dog يرث من Animal.</p>
+      `},
+      { title:'معالجة الأخطاء وأشهر المكتبات', body:`
+        <h4>معالجة الأخطاء</h4>
+        <pre><code>try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("خطأ: القسمة على صفر غير مسموحة")
+finally:
+    print("انتهت المحاولة")</code></pre>
+        <p>try تحتوي الكود الذي قد يسبب خطأ، وexcept تلتقط نوعًا محددًا من الأخطاء دون توقف البرنامج بالكامل، وfinally تُنفَّذ دائمًا سواء حدث خطأ أم لا.</p>
+        <h4>أشهر المكتبات حسب المجال</h4>
+        <ul>
+          <li><code>pandas</code> و<code>NumPy</code> — تحليل البيانات والحوسبة العلمية.</li>
+          <li><code>TensorFlow</code> و<code>PyTorch</code> — الذكاء الاصطناعي وتعلّم الآلة.</li>
+          <li><code>Django</code> و<code>Flask</code> — بناء تطبيقات الويب الخلفية.</li>
+          <li><code>requests</code> — التعامل مع الإنترنت وواجهات API بسهولة.</li>
+        </ul>
+      `},
+      { title:'مفاهيم احترافية متقدمة', body:`
+        <h4>المولّدات (Generators)</h4>
+        <pre><code>def count_up_to(n):
+    i = 1
+    while i &lt;= n:
+        yield i
+        i += 1
+
+for num in count_up_to(5):
+    print(num)</code></pre>
+        <p>yield تحوّل الدالة إلى مولّد يُنتج القيم واحدة تلو الأخرى عند الطلب بدل حسابها كلها دفعة واحدة في الذاكرة، وهذا موفّر جدًا للذاكرة عند التعامل مع بيانات ضخمة أو تسلسلات لا نهائية.</p>
+        <h4>الديكوريتورز (Decorators)</h4>
+        <pre><code>def log_call(func):
+    def wrapper(*args, **kwargs):
+        print("جاري استدعاء:", func.__name__)
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_call
+def greet(name):
+    print("أهلًا", name)
+
+greet("سارة")</code></pre>
+        <p>الديكوريتور دالة تُغلّف دالة أخرى لإضافة سلوك جديد (كتسجيل الأحداث، أو قياس الوقت) دون تعديل كود الدالة الأصلية. الرمز @log_call فوق تعريف الدالة هو الصياغة المختصرة لتطبيق الديكوريتور.</p>
+        <h4>List/Dict Comprehension متقدمة والبرمجة الوظيفية</h4>
+        <pre><code>nums = [1, 2, 3, 4, 5, 6]
+evens_squared = [x**2 for x in nums if x % 2 == 0]
+print(evens_squared)  # [4, 16, 36]
+
+doubled = list(map(lambda x: x * 2, nums))
+total = sum(filter(lambda x: x &gt; 3, nums))</code></pre>
+        <p>يمكن دمج شرط if داخل list comprehension لتصفية العناصر أثناء البناء. map وfilter مع دوال lambda مجهولة الاسم أدوات أساسية في الأسلوب الوظيفي (Functional Programming) داخل بايثون.</p>
+        <h4>البرمجة اللامتزامنة (Async) — نظرة سريعة</h4>
+        <pre><code>import asyncio
+
+async def fetch_data():
+    print("بدء الجلب...")
+    await asyncio.sleep(2)
+    print("اكتمل الجلب")
+
+asyncio.run(fetch_data())</code></pre>
+        <p>async وawait يسمحان بتنفيذ عمليات طويلة (كطلبات الشبكة) دون تجميد باقي البرنامج، وهما أساس بناء خوادم وتطبيقات عالية الأداء في بايثون الحديثة.</p>
+        <div class="note">هذه المفاهيم تنقلك من "يعرف بايثون" إلى "يكتب بايثون احترافيًا" — الخطوة التالية بعدها هي بناء مشاريع حقيقية تدمج هذه الأدوات معًا.</div>
+      `},
+      { title:'أين تُستخدم ولماذا', body:`
+        <h4>أين تُستخدم ولماذا تتعلّمها؟</h4>
+        <ul>
+          <li>الذكاء الاصطناعي وتعلّم الآلة (TensorFlow، PyTorch).</li>
+          <li>تحليل البيانات والعلوم (pandas، NumPy).</li>
+          <li>تطوير الويب الخلفي (Django، Flask) والأتمتة والسكربتات.</li>
+        </ul>
+        <div class="note">بايثون هي غالبًا أفضل نقطة انطلاق لأي مبتدئ في البرمجة بفضل بساطتها الشديدة، وفي نفس الوقت لغة احترافية تُستخدم فعليًا في أكبر شركات التقنية بالعالم مثل جوجل ونتفليكس.</div>
+      `},
+    ],
+    quiz:[
+      {q:'ما الأمر المستخدم لطباعة نص في بايثون؟', options:['echo()','print()','console.log()','printf()'], correct:1, explain:'print() هي الدالة المدمجة القياسية لطباعة القيم والنصوص على الشاشة في بايثون.'},
+      {q:'أي رمز يُستخدم لكتابة تعليق بسطر واحد في بايثون؟', options:['//','#','<!--','/*'], correct:1, explain:'الرمز # يجعل كل ما يليه في نفس السطر تعليقًا يتجاهله المفسّر.'},
+      {q:'ما ناتج type(5)؟', options:["<class 'str'>","<class 'int'>","<class 'float'>","<class 'bool'>"], correct:1, explain:'الرقم 5 بدون فاصلة عشرية يُصنَّف تلقائيًا كنوع int (عدد صحيح).'},
+      {q:'ما ناتج type(5.0)؟', options:["<class 'int'>","<class 'float'>","<class 'double'>","<class 'num'>"], correct:1, explain:'أي رقم يحتوي فاصلة عشرية يُصنَّف تلقائيًا كنوع float في بايثون.'},
+      {q:'ما ناتج type("hello")؟', options:["<class 'str'>","<class 'char'>","<class 'text'>","<class 'string'>"], correct:0, explain:'أي قيمة محاطة بعلامتي اقتباس تُصنَّف كنوع str (نص) في بايثون.'},
+      {q:'كيف تُنشئ متغيرًا اسمه x بقيمة 10 في بايثون؟', options:['int x = 10;','x = 10','var x = 10','let x = 10;'], correct:1, explain:'بايثون لا تتطلب تحديد نوع المتغير ولا فاصلة منقوطة؛ فكتابة x = 10 كافية لإنشاء المتغير.'},
+      {q:'ما الفرق بين = و == في بايثون؟', options:['لا فرق بينهما إطلاقًا','= تُستخدم للإسناد، وتُستخدم == للمقارنة بين قيمتين','== أبطأ من = دائمًا','= تُستخدم فقط مع الأرقام'], correct:1, explain:'= يُسند قيمة إلى متغير، بينما == يُقارن بين قيمتين ويُرجع True أو False.'},
+      {q:'ما ناتج التعبير 2 ** 3 في بايثون؟', options:['6','8','9','5'], correct:1, explain:'العامل ** يُستخدم للأس (القوة) في بايثون، و2 ** 3 يعني 2 مرفوعة للأس 3 أي 8.'},
+      {q:'ما ناتج التعبير 10 % 3؟', options:['3','1','0','3.33'], correct:1, explain:'العامل % يُرجع باقي القسمة، وباقي قسمة 10 على 3 يساوي 1.'},
+      {q:'ما ناتج التعبير "3" + "4" في بايثون؟', options:['7','"34"','خطأ','"7"'], correct:1, explain:'جمع نصين في بايثون يعني دمجهما (Concatenation) وليس جمعًا رياضيًا، لذا الناتج هو النص "34".'},
+      {q:'أي دالة تُستخدم لتحويل نص إلى عدد صحيح؟', options:['str()','int()','float()','num()'], correct:1, explain:'int() تحاول تحويل القيمة الممرَّرة (مثل نص يحتوي رقمًا) إلى عدد صحيح.'},
+      {q:'ما الصياغة الصحيحة لجملة شرطية if في بايثون؟', options:['if (x > 5) { }','if x > 5:','if x > 5 then','when x > 5:'], correct:1, explain:'صياغة if في بايثون تنتهي بنقطتين رأسيتين : وتعتمد على المسافة البادئة لتحديد الكتلة التابعة لها، دون أقواس.'},
+      {q:'ما الكلمة المستخدمة لحالة بديلة تُنفَّذ عند عدم تحقق الشرط؟', options:['elif','else','otherwise','or'], correct:1, explain:'else تُنفَّذ عندما لا يتحقق شرط if، بينما elif تُستخدم لإضافة شرط إضافي قبل else.'},
+      {q:'ما الكلمة المستخدمة لإضافة شرط إضافي بعد if؟', options:['else if','elseif','elif','and if'], correct:2, explain:'elif هي الصياغة الخاصة ببايثون لإضافة شرط بديل إضافي، وهي اختصار لـ else if.'},
+      {q:'أي عامل منطقي يعني "و" (يجب تحقق الشرطين معًا)؟', options:['or','and','&&','not'], correct:1, explain:'and هي الكلمة المفتاحية التي تُرجع True فقط إذا كان الطرفان صحيحين معًا.'},
+      {q:'أي عامل منطقي يعني "أو" (يكفي تحقق أحد الشرطين)؟', options:['and','or','||','not'], correct:1, explain:'or تُرجع True إذا تحقق أحد الشرطين على الأقل.'},
+      {q:'كيف تكتب حلقة for تكرر 5 مرات (من 0 إلى 4)؟', options:['for i in range(5):','for(i=0;i<5;i++)','for i = 1 to 5','loop 5 times:'], correct:0, explain:'for i in range(5): تُكرر الجسم 5 مرات، حيث تأخذ i القيم 0 و1 و2 و3 و4.'},
+      {q:'ما القيم التي يُنتجها range(5)؟', options:['1,2,3,4,5','0,1,2,3,4','0,1,2,3,4,5','5 فقط'], correct:1, explain:'range(5) يبدأ من 0 وينتهي عند 4 (لا يشمل الرقم 5 نفسه)، أي 5 قيم بالإجمالي.'},
+      {q:'ما الصياغة الصحيحة لحلقة while في بايثون؟', options:['while(condition){}','while condition:','while condition do','loop while(condition)'], correct:1, explain:'صياغة while في بايثون: while condition: ثم كتلة الكود بمسافة بادئة، دون أقواس.'},
+      {q:'ما الكلمة المستخدمة لإيقاف حلقة قبل انتهائها بالكامل؟', options:['stop','break','exit','end'], correct:1, explain:'break تُنهي تنفيذ أقرب حلقة محيطة بها فورًا.'},
+      {q:'ما الكلمة المستخدمة لتخطي التكرار الحالي والانتقال مباشرة للتالي؟', options:['skip','next','continue','pass'], correct:2, explain:'continue تتجاهل باقي أوامر التكرار الحالي وتنتقل مباشرة لبدء التكرار التالي.'},
+      {q:'كيف تُعرَّف دالة في بايثون؟', options:['function name():','def name():','func name():','define name():'], correct:1, explain:'def هي الكلمة المفتاحية المستخدمة لتعريف أي دالة جديدة في بايثون.'},
+      {q:'ما الكلمة المستخدمة لإرجاع قيمة من دالة؟', options:['return','yield فقط','give','output'], correct:0, explain:'return تُنهي تنفيذ الدالة وتُعيد القيمة التي تليها إلى الكود المستدعي.'},
+      {q:'كيف تُنشئ قائمة (list) فارغة في بايثون؟', options:['{}','()','[]','<>'], correct:2, explain:'الأقواس المربعة [] تُنشئ قائمة فارغة، بينما {} تُنشئ قاموسًا فارغًا.'},
+      {q:'أي دالة تُضيف عنصرًا جديدًا لنهاية قائمة؟', options:['add()','push()','append()','insertEnd()'], correct:2, explain:'append() هي الدالة القياسية لإضافة عنصر واحد جديد إلى نهاية قائمة في بايثون.'},
+      {q:'ما ناتج len([1, 2, 3])؟', options:['2','3','6','خطأ'], correct:1, explain:'len() تُرجع عدد العناصر في القائمة، والقائمة [1,2,3] تحتوي 3 عناصر.'},
+      {q:'كيف تصل للعنصر الأول في قائمة اسمها nums؟', options:['nums(0)','nums[1]','nums[0]','nums.first()'], correct:2, explain:'الفهرسة في قوائم بايثون تبدأ من الصفر، لذا nums[0] يشير دائمًا للعنصر الأول.'},
+      {q:'ما نوع البيانات الذي يُمثله {} الفارغ في بايثون؟', options:['list','tuple','dict (قاموس)','set'], correct:2, explain:'الأقواس المعقوفة الفارغة {} تُنشئ قاموسًا (dict) فارغًا في بايثون.'},
+      {q:'كيف تصل لقيمة المفتاح "name" في قاموس اسمه student؟', options:['student.name','student->name','student["name"]','student(name)'], correct:2, explain:'يتم الوصول لقيمة مفتاح معيّن في القاموس عبر وضعه بين قوسين مربعين، مثل student["name"].'},
+      {q:'ما الفرق الجوهري بين list وtuple في بايثون؟', options:['لا فرق عملي بينهما','tuple غير قابلة للتعديل بعد إنشائها بينما list قابلة للتعديل','list أسرع من tuple دائمًا','tuple لا يمكنها تخزين الأرقام'], correct:1, explain:'الـ tuple ثابتة لا يمكن تغيير عناصرها بعد الإنشاء، بينما list تسمح بالإضافة والحذف والتعديل بحرية.'},
+      {q:'كيف تُنشئ tuple يحتوي القيم 1 و2 و3؟', options:['[1,2,3]','{1,2,3}','(1,2,3)','<1,2,3>'], correct:2, explain:'تُنشأ الـ tuple باستخدام الأقواس الهلالية ()، مثل (1, 2, 3).'},
+      {q:'ما ناتج bool(0)؟', options:['True','False','0','خطأ'], correct:1, explain:'الصفر يُعتبر قيمة "فارغة" منطقيًا في بايثون، لذا bool(0) يُرجع False.'},
+      {q:'ما ناتج bool(1)؟', options:['False','True','1','خطأ'], correct:1, explain:'أي رقم غير صفري يُعتبر "صحيحًا" منطقيًا في بايثون، لذا bool(1) يُرجع True.'},
+      {q:'كيف تُعرَّف كلاس في بايثون؟', options:['struct ClassName:','def ClassName():','class ClassName:','new ClassName()'], correct:2, explain:'class هي الكلمة المفتاحية المستخدمة لتعريف كلاس جديد في بايثون، تليها نقطتان رأسيتان : وجسم مُزاح بمسافة بادئة.'},
+      {q:'ما اسم الدالة الخاصة التي تعمل كباني (Constructor) للكلاس؟', options:['__start__','__init__','__new__ فقط','construct()'], correct:1, explain:'__init__ هي الدالة الخاصة التي تُستدعى تلقائيًا عند إنشاء كائن جديد من الكلاس لتهيئة خصائصه.'},
+      {q:'ما الكلمة المفتاحية التي تشير إلى الكائن الحالي نفسه داخل دوال الكلاس؟', options:['this','self','me','instance'], correct:1, explain:'self هو المعامل الأول الإلزامي في دوال الكلاس بلغة بايثون، ويشير إلى الكائن الذي استُدعيت الدالة من خلاله.'},
+      {q:'كيف يرث كلاس Dog من كلاس Animal في بايثون؟', options:['class Dog extends Animal:','class Dog(Animal):','class Dog : Animal:','class Dog implements Animal:'], correct:1, explain:'وضع اسم الكلاس الأب بين قوسين بعد اسم الكلاس المشتق، مثل class Dog(Animal):، هو الصياغة الصحيحة للوراثة في بايثون.'},
+      {q:'ما الكلمة المستخدمة لالتقاط خطأ (استثناء) في بايثون؟', options:['catch','except','rescue','handle'], correct:1, explain:'except تلتقط نوعًا محددًا من الأخطاء التي قد تحدث داخل كتلة try المرتبطة بها.'},
+      {q:'ما الكتلة التي تحتوي الكود القابل لإطلاق خطأ؟', options:['except','finally','try','risk'], correct:2, explain:'try تحتوي الكود الذي قد يُطلق استثناء (Exception)، وإذا حدث الخطأ يقفز التنفيذ لكتلة except المناسبة.'},
+      {q:'ما امتداد ملفات الكود المصدري في بايثون؟', options:['.py','.pyt','.pt','.python'], correct:0, explain:'.py هو الامتداد القياسي لملفات الكود المصدري المكتوبة بلغة بايثون.'},
+    ],
+    qaItems:[
+      { q:'اكتب كودًا يطلب من المستخدم إدخال اسم الطالب وكلمة المرور ثم يطبعهما.', code:`name = input("أدخل اسم الطالب: ")
+password = input("أدخل كلمة المرور: ")
+print("الاسم:", name)
+print("كلمة المرور:", password)` },
+      { q:'اكتب كودًا يحسب مجموع رقمين يُدخلهما المستخدم.', code:`a = int(input("أدخل الرقم الأول: "))
+b = int(input("أدخل الرقم الثاني: "))
+print("المجموع:", a + b)` },
+      { q:'اكتب كودًا يتحقق هل رقم أدخله المستخدم زوجي أم فردي.', code:`num = int(input("أدخل رقمًا: "))
+if num % 2 == 0:
+    print("زوجي")
+else:
+    print("فردي")` },
+      { q:'اكتب كودًا يطبع الأرقام من 1 إلى 10 باستخدام حلقة for.', code:`for i in range(1, 11):
+    print(i)` },
+      { q:'اكتب دالة تحسب مضروب رقم (factorial).', code:`def factorial(n):
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+
+print(factorial(5))  # 120` },
+      { q:'اكتب كودًا يجد أكبر رقم في قائمة أرقام.', code:`numbers = [4, 9, 2, 7, 15, 3]
+largest = max(numbers)
+print("أكبر رقم:", largest)` },
+      { q:'اكتب كودًا يعكس نصًا أدخله المستخدم.', code:`text = input("أدخل نصًا: ")
+print("النص معكوسًا:", text[::-1])` },
+      { q:'اكتب كلاسًا بسيطًا اسمه Student يخزّن الاسم والعمر، مع دالة تطبع بياناته.', code:`class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def display(self):
+        print(f"الاسم: {self.name}, العمر: {self.age}")
+
+s = Student("سارة", 20)
+s.display()` },
+      { q:'اكتب كودًا يحسب عدد مرات تكرار كل حرف في نص باستخدام قاموس.', code:`text = "hello"
+counts = {}
+for ch in text:
+    counts[ch] = counts.get(ch, 0) + 1
+print(counts)` },
+      { q:'اكتب كودًا يستخدم try/except للتعامل مع خطأ القسمة على صفر.', code:`try:
+    a = int(input("أدخل عددًا: "))
+    result = 100 / a
+    print("الناتج:", result)
+except ZeroDivisionError:
+    print("لا يمكن القسمة على صفر")` },
+    ]
+  },
+
+  java:{
+    name:'Java',
+    videos:[
+      {id:'FwxbTGxTcVI', title:'كورس لغة جافا من الصفر — Java Course'},
+      {id:'S0DmG9LhpWA', title:'شرح Java واستخدامات اللغة — أفضل كورس'},
+      {id:'ck7dreCJfQM', title:'اقوى كورس تعلم جافا من الصفر حتى الاحتراف'},
+      {id:'fqz4oXmsSJ0', title:'شرح الـ Class وإنشاء ملف Java — دورة تعلم جافا'},
+    ],
+    summaryPages:[
+      { title:'مقدمة والانطلاقة', body:`
+        <h4>ما هي لغة جافا؟</h4>
+        <p>Java لغة برمجة كائنية التوجّه، صممتها شركة Sun Microsystems عام 1995م وتملكها الآن Oracle. شعارها الشهير "اكتب مرة، شغّل في أي مكان" — فالكود يُترجم إلى Bytecode وسيط تُنفّذه آلة جافا الافتراضية (JVM) الموجودة على كل نظام تشغيل.</p>
+        <p>جافا لغة <b>قوية الكتابة</b>، أي يجب تحديد نوع كل متغير عند تعريفه. كما تمتلك إدارة تلقائية للذاكرة عبر Garbage Collector.</p>
+        <h4>بنية أول برنامج</h4>
+        <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("مرحبًا بالعالم");
+    }
+}</code></pre>
+        <p><code>public class Main</code> يعرّف كلاسًا عامًا اسمه Main، ويجب أن يحمل الملف نفس الاسم. <code>public static void main</code> هي التوقيع الثابت الذي تبحث عنه JVM لبدء التنفيذ.</p>
+      `},
+      { title:'المتغيرات والإدخال والإخراج', body:`
+        <h4>المتغيرات وأنواع البيانات</h4>
+        <pre><code>int age = 25;          // عدد صحيح
+double price = 19.99;  // عدد عشري
+boolean isActive = true;
+char grade = 'A';
+String name = "أحمد";</code></pre>
+        <p>لاحظ أن String تبدأ بحرف كبير لأنها كلاس جاهز وليست نوعًا بدائيًا، بينما int وdouble وboolean وchar أنواع بدائية بسيطة.</p>
+        <h4>الإدخال والإخراج</h4>
+        <pre><code>import java.util.Scanner;
+
+Scanner input = new Scanner(System.in);
+System.out.print("أدخل اسمك: ");
+String name = input.nextLine();
+System.out.println("أهلًا بك " + name);</code></pre>
+        <p>Scanner كلاس جاهز لقراءة مدخلات المستخدم، ونستورده عبر import قبل استخدامه.</p>
+      `},
+      { title:'الجمل الشرطية والحلقات', body:`
+        <h4>الجمل الشرطية</h4>
+        <pre><code>int score = 75;
+if (score &gt;= 90) {
+    System.out.println("ممتاز");
+} else if (score &gt;= 60) {
+    System.out.println("ناجح");
+} else {
+    System.out.println("راسب");
+}</code></pre>
+        <h4>الحلقات التكرارية</h4>
+        <pre><code>for (int i = 1; i &lt;= 5; i++) {
+    System.out.println("التكرار رقم " + i);
+}
+
+int count = 0;
+while (count &lt; 3) {
+    System.out.println("count = " + count);
+    count++;
+}</code></pre>
+        <p>حلقة for مناسبة عندما تعرف عدد مرات التكرار مسبقًا، أما while فتُستخدم عندما يعتمد التوقف على شرط قد يتغيّر أثناء التنفيذ.</p>
+      `},
+      { title:'الدوال والمصفوفات', body:`
+        <h4>الدوال (Methods)</h4>
+        <pre><code>public static int square(int x) {
+    return x * x;
+}
+
+int result = square(5); // result = 25</code></pre>
+        <h4>المصفوفات</h4>
+        <pre><code>int[] numbers = {10, 20, 30, 40};
+System.out.println(numbers[0]); // 10
+System.out.println(numbers.length); // 4
+
+for (int n : numbers) {
+    System.out.println(n);
+}</code></pre>
+        <p>المصفوفة تخزّن عناصر من نفس النوع بحجم ثابت بعد إنشائها، ويبدأ الترقيم فيها دائمًا من 0.</p>
+      `},
+      { title:'البرمجة كائنية التوجه', body:`
+        <p>جافا مبنية على أربعة مبادئ: التغليف، الوراثة، تعدد الأشكال، والتجريد.</p>
+        <pre><code>class Animal {
+    protected String name;
+    Animal(String name) { this.name = name; }
+    void makeSound() {
+        System.out.println(name + " يصدر صوتًا");
+    }
+}
+
+class Dog extends Animal {
+    Dog(String name) { super(name); }
+    @Override
+    void makeSound() {
+        System.out.println(name + " ينبح");
+    }
+}
+
+Animal a = new Dog("ريكس");
+a.makeSound(); // ريكس ينبح</code></pre>
+        <p>class Dog extends Animal يجعل Dog يرث كل خصائص Animal، و@Override تُعيد تعريف makeSound بسلوك خاص بـ Dog — مثال على تعدد الأشكال.</p>
+      `},
+      { title:'معالجة الأخطاء وCollections', body:`
+        <h4>معالجة الأخطاء</h4>
+        <pre><code>try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("خطأ: القسمة على صفر غير مسموحة");
+} finally {
+    System.out.println("انتهت المحاولة");
+}</code></pre>
+        <h4>مقدمة في Collections</h4>
+        <pre><code>import java.util.ArrayList;
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+names.add("سارة");
+names.add("علي");
+names.remove("علي");</code></pre>
+        <p>ArrayList قائمة قابلة للنمو تلقائيًا، بديل مرن عن المصفوفات الثابتة الحجم.</p>
+      `},
+      { title:'مفاهيم احترافية متقدمة', body:`
+        <h4>الأنواع العامة (Generics)</h4>
+        <pre><code>class Box&lt;T&gt; {
+    private T content;
+    public void set(T value) { content = value; }
+    public T get() { return content; }
+}
+
+Box&lt;String&gt; box = new Box&lt;&gt;();
+box.set("مرحبًا");
+System.out.println(box.get());</code></pre>
+        <p>الـ Generics تسمح بكتابة كلاس أو دالة تعمل مع أي نوع بيانات دون تكرار الكود لكل نوع على حدة، مع الحفاظ على أمان الأنواع (Type Safety) أثناء الترجمة. <code>&lt;T&gt;</code> هنا نوع عام يُستبدل بالنوع الفعلي عند الاستخدام.</p>
+        <h4>تعبيرات Lambda وواجهة Stream (Java 8+)</h4>
+        <pre><code>import java.util.List;
+import java.util.stream.Collectors;
+
+List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6);
+List&lt;Integer&gt; evenSquares = nums.stream()
+    .filter(n -&gt; n % 2 == 0)
+    .map(n -&gt; n * n)
+    .collect(Collectors.toList());
+
+System.out.println(evenSquares); // [4, 16, 36]</code></pre>
+        <p>تعبيرات lambda (مثل n -> n % 2 == 0) هي دوال مختصرة مجهولة الاسم. واجهة Stream تسمح بمعالجة مجموعات البيانات بأسلوب تدفقي (تصفية، تحويل، تجميع) بأسلوب وظيفي مقروء دون حلقات صريحة.</p>
+        <h4>الخيوط والتزامن (Multithreading) — نظرة سريعة</h4>
+        <pre><code>Runnable task = () -&gt; {
+    System.out.println("يعمل على خيط منفصل: " + Thread.currentThread().getName());
+};
+
+Thread t = new Thread(task);
+t.start();</code></pre>
+        <p>الخيط (Thread) يسمح بتنفيذ مهمة بالتوازي مع باقي البرنامج دون انتظارها. هذا أساس بناء التطبيقات التي تحتاج تنفيذ عدة عمليات في آن واحد، مثل الخوادم التي تخدم عدة مستخدمين معًا.</p>
+        <h4>الدوال الافتراضية في الواجهات (Default Methods)</h4>
+        <pre><code>interface Greetable {
+    default void greet() {
+        System.out.println("مرحبًا من الواجهة!");
+    }
+}
+
+class Person implements Greetable {}
+
+new Person().greet(); // مرحبًا من الواجهة!</code></pre>
+        <p>منذ جافا 8، يمكن للواجهة توفير تنفيذ افتراضي (default) لدالة، فلا يُجبَر كل كلاس يطبّقها على إعادة كتابتها من الصفر إن كان السلوك الافتراضي مناسبًا له.</p>
+        <div class="note">هذه المفاهيم هي ما يميّز مطوّر جافا المحترف العامل في بيئات المؤسسات الكبرى — الخطوة التالية هي التعمق في إطار عمل مثل Spring لتطبيقها في مشاريع حقيقية.</div>
+      `},
+      { title:'أين تُستخدم ولماذا', body:`
+        <ul>
+          <li>تطبيقات أندرويد — اللغة الأساسية تاريخيًا لتطوير تطبيقات أندرويد.</li>
+          <li>أنظمة المؤسسات الكبرى والبنوك عبر إطار عمل Spring.</li>
+          <li>الخوادم الخلفية وواجهات برمجة التطبيقات (Backend APIs).</li>
+        </ul>
+        <div class="note">جافا من أكثر اللغات طلبًا في سوق العمل باستمرار، وإتقانها يمنحك أساسًا قويًا في البرمجة كائنية التوجه ينفعك لاحقًا عند تعلّم أي لغة أخرى.</div>
+      `},
+    ],
+    quiz:[
+      {q:'ما امتداد ملفات الكود المصدري في جافا؟', options:['.java','.class','.jav','.jvm'], correct:0, explain:'ملفات الكود المصدري في جافا تُحفظ بامتداد java.، وعند ترجمتها ينتج ملف بايت كود بامتداد .class.'},
+      {q:'ما اسم الدالة التي يبدأ منها تنفيذ أي برنامج جافا؟', options:['start()','main()','run()','init()'], correct:1, explain:'الدالة main هي نقطة الدخول القياسية التي تبحث عنها JVM لبدء تنفيذ البرنامج.'},
+      {q:'أي دالة تُستخدم لطباعة نص مع الانتقال لسطر جديد؟', options:['System.out.print()','System.out.println()','System.print()','console.log()'], correct:1, explain:'System.out.println() تطبع القيمة ثم تنتقل تلقائيًا لسطر جديد.'},
+      {q:'أي رمز يُستخدم لكتابة تعليق بسطر واحد في جافا؟', options:['#','//','<!--','/*'], correct:1, explain:'الرمز // يجعل كل ما يليه في نفس السطر تعليقًا يتجاهله المترجم.'},
+      {q:'ما الصياغة الصحيحة لتعريف متغير صحيح x بقيمة 5؟', options:['int x = 5;','x = 5','var x = 5;','x: int = 5'], correct:0, explain:'جافا لغة قوية الكتابة، فيجب تحديد النوع صراحة عند تعريف المتغير.'},
+      {q:'ما الرمز الذي يجب أن ينتهي به كل سطر برمجي في جافا؟', options:[':',';','.','،'], correct:1, explain:'الفاصلة المنقوطة ; تُنهي كل جملة برمجية في جافا.'},
+      {q:'أي نوع بيانات يُستخدم لتخزين سلسلة نصية في جافا؟', options:['char','String','text','str'], correct:1, explain:'String هو الكلاس الجاهز في جافا لتخزين النصوص، بينما char يُخزّن حرفًا واحدًا فقط.'},
+      {q:'أي نوع بيانات يُستخدم لتخزين قيمة true أو false؟', options:['bit','flag','boolean','bool'], correct:2, explain:'boolean هو النوع البدائي المخصص لتخزين إحدى القيمتين true أو false.'},
+      {q:'ما ناتج التعبير 7 / 2 عندما يكون الطرفان من نوع int؟', options:['3.5','3','4','خطأ'], correct:1, explain:'قسمة عددين صحيحين في جافا تُهمل الكسر العشري وتُرجع الجزء الصحيح فقط.'},
+      {q:'ما ناتج التعبير 7 % 2؟', options:['3','1','0','3.5'], correct:1, explain:'العامل % يُرجع باقي القسمة، وباقي قسمة 7 على 2 يساوي 1.'},
+      {q:'ما الصياغة الصحيحة لجملة شرطية if في جافا؟', options:['if condition then','if (condition) { }','if condition: ','when(condition){}'], correct:1, explain:'يتطلب وضع الشرط بين قوسين ثم كتلة التنفيذ بين قوسين معقوفين.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لحالة بديلة عن if؟', options:['elif','otherwise','else','or'], correct:2, explain:'else تُستخدم لتنفيذ كتلة بديلة عندما لا يتحقق شرط if.'},
+      {q:'ما الجملة التي تبدأ بها بنية switch لاختيار حالة من عدة حالات؟', options:['switch(x) { case ... }','choose(x){}','select x { }','match(x){}'], correct:0, explain:'switch(x) { case value: ... } هي البنية القياسية لاختيار من بين عدة حالات محتملة.'},
+      {q:'ما الصياغة الصحيحة لحلقة for تكرر من 0 حتى أقل من n؟', options:['for(int i=0;i<n;i++)','for i in range(n)','for(i=0,i<n,i++)','loop(0,n)'], correct:0, explain:'صياغة for: تهيئة؛ شرط؛ تحديث.'},
+      {q:'ما الصياغة الصحيحة لحلقة while؟', options:['while(condition){}','while condition do','loop while(condition)','repeat until(condition)'], correct:0, explain:'while(condition){ } تُكرر تنفيذ الكتلة طالما الشرط صحيحًا.'},
+      {q:'متى يُفضّل استخدام حلقة for بدلًا من while؟', options:['عندما يكون عدد التكرارات معروفًا مسبقًا','عندما لا نعرف عدد التكرارات إطلاقًا','for أسرع دائمًا من while','لا فرق بينهما إطلاقًا'], correct:0, explain:'for مناسبة عندما نعرف عدد مرات التكرار مسبقًا، بينما while تناسب الشروط المتغيّرة.'},
+      {q:'ما الكلمة المفتاحية التي تُوقف تنفيذ حلقة فورًا؟', options:['stop','break','exit','return'], correct:1, explain:'break تُنهي تنفيذ أقرب حلقة أو switch محيطة بها فورًا.'},
+      {q:'ما الكلمة المفتاحية التي تتخطى التكرار الحالي وتنتقل للتكرار التالي؟', options:['skip','next','continue','pass'], correct:2, explain:'continue تتجاهل باقي أوامر التكرار الحالي وتنتقل مباشرة للتكرار التالي.'},
+      {q:'ما الصياغة الصحيحة لتعريف دالة عامة تُرجع int اسمها add؟', options:['public static int add(int a, int b){}','function add(a,b){}','def add(a,b):','int add = (a,b) => {}'], correct:0, explain:'يجب تحديد مستوى الوصول ونوع القيمة المُرجَعة قبل اسم الدالة.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لإرجاع قيمة من دالة؟', options:['return','yield','give','output'], correct:0, explain:'return تُنهي تنفيذ الدالة فورًا وتُعيد القيمة إلى الكود الذي استدعاها.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لإنشاء كائن جديد من كلاس؟', options:['create','new','make','init'], correct:1, explain:'new تخصص مساحة في الذاكرة لكائن جديد وتستدعي الباني المناسب.'},
+      {q:'ما الصياغة الصحيحة لتعريف مصفوفة من 5 أعداد صحيحة؟', options:['int arr[5];','int[] arr = new int[5];','array arr = int[5];','int arr = [5];'], correct:1, explain:'الصياغة الصحيحة هي int[] arr = new int[5]; والتي تخصص مساحة لخمسة عناصر.'},
+      {q:'كيف تصل إلى العنصر الأول في مصفوفة اسمها arr؟', options:['arr(0)','arr[1]','arr[0]','arr.first()'], correct:2, explain:'الفهرسة في مصفوفات جافا تبدأ من الصفر، لذا arr[0] يشير دائمًا إلى العنصر الأول.'},
+      {q:'ما الخاصية المستخدمة لمعرفة عدد عناصر مصفوفة اسمها arr؟', options:['arr.length','arr.size()','arr.count','len(arr)'], correct:0, explain:'length خاصية مدمجة في كل مصفوفة جافا تُعيد عدد عناصرها.'},
+      {q:'ما الصياغة الصحيحة لتعريف كلاس اسمه Car؟', options:['function Car(){}','class Car {}','struct Car {}','def Car():'], correct:1, explain:'class Car { } هي الصياغة القياسية لتعريف كلاس جديد في جافا.'},
+      {q:'ما اسم الدالة الخاصة التي تُستدعى تلقائيًا عند إنشاء كائن جديد؟', options:['init()','الباني وله نفس اسم الكلاس','start()','build()'], correct:1, explain:'الباني له نفس اسم الكلاس ويُستدعى تلقائيًا عند إنشاء كائن جديد بـ new.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لجعل كلاس يرث من كلاس آخر؟', options:['implements','extends','inherits','uses'], correct:1, explain:'extends تُستخدم لجعل كلاس يرث خصائص وسلوكيات كلاس آخر.'},
+      {q:'ما الغرض من وضع @Override قبل دالة داخل كلاس مشتق؟', options:['تسريع تنفيذ الدالة','توضيح أن الدالة تُعيد تعريف دالة موروثة من الكلاس الأب','حذف الدالة الأصلية','جعل الدالة خاصة (private)'], correct:1, explain:'@Override توضيح يخبر المترجم أن الدالة تُعيد تعريف دالة موجودة في الكلاس الأب.'},
+      {q:'أي مستوى وصول يجعل العنصر مرئيًا فقط داخل الكلاس نفسه؟', options:['public','protected','private','default'], correct:2, explain:'private تحصر إمكانية الوصول إلى العنصر داخل نفس الكلاس فقط.'},
+      {q:'أي مستوى وصول يجعل العنصر مرئيًا من أي مكان في البرنامج؟', options:['private','protected','public','local'], correct:2, explain:'public يسمح بالوصول إلى العنصر من أي كلاس آخر في البرنامج دون قيود.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لتعريف واجهة (Interface)؟', options:['interface','abstract','protocol','contract'], correct:0, explain:'interface تُستخدم لتعريف عقد يحدد توقيعات الدوال التي يجب على أي كلاس يطبّقها تنفيذها.'},
+      {q:'ما الكلمة المفتاحية التي يستخدمها كلاس ليطبّق واجهة معينة؟', options:['extends','implements','uses','applies'], correct:1, explain:'implements تُستخدم عندما يريد كلاس تطبيق واجهة معينة.'},
+      {q:'ما الفرق بين == و equals() عند مقارنة كائنين من نوع مرجعي؟', options:['لا فرق بينهما إطلاقًا','== تقارن مرجع الذاكرة، وequals() يمكن ضبطها لمقارنة المحتوى الفعلي','equals() أسرع دائمًا','== تعمل فقط مع الأرقام'], correct:1, explain:'== تفحص إن كان المتغيّران يشيران لنفس الكائن، بينما equals() يمكن إعادة تعريفها لمقارنة القيم الفعلية.'},
+      {q:'ما البديل الديناميكي القابل للنمو عن المصفوفة الثابتة في جافا؟', options:['ArrayList','FixedArray','StaticList','DynamicArray'], correct:0, explain:'ArrayList هيكل بيانات ديناميكي ينمو تلقائيًا عند إضافة عناصر جديدة.'},
+      {q:'أي دالة تُضيف عنصرًا جديدًا إلى نهاية ArrayList اسمها list؟', options:['list.push(item)','list.insert(item)','list.add(item)','list.append(item)'], correct:2, explain:'دالة add(item) هي الطريقة القياسية لإضافة عنصر جديد إلى نهاية ArrayList.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لالتقاط استثناء (Exception) محتمل؟', options:['catch','handle','rescue','except'], correct:0, explain:'catch تلتقط نوعًا محددًا من الاستثناءات التي قد تحدث داخل كتلة try المرتبطة بها.'},
+      {q:'ما الكتلة التي تحتوي الكود الذي قد يسبب خطأ أثناء التنفيذ؟', options:['catch','finally','try','risk'], correct:2, explain:'try تحتوي الكود الذي قد يُطلق استثناء، فإذا حدث يقفز التنفيذ لكتلة catch المناسبة.'},
+      {q:'ما الكتلة التي تُنفَّذ دائمًا سواء حدث استثناء أم لا؟', options:['finally','always','catch','end'], correct:0, explain:'finally تُنفَّذ دائمًا بعد try/catch بغض النظر عن حدوث استثناء.'},
+      {q:'ما الغرض من الكلمة المفتاحية static؟', options:['جعل المتغير أو الدالة تابعة للكلاس نفسه بدل كل كائن على حدة','منع تعديل القيمة نهائيًا','حذف العنصر تلقائيًا من الذاكرة','تحويل الكلاس إلى واجهة'], correct:0, explain:'العناصر static تنتمي للكلاس ذاته وتُشارَك بين جميع كائناته.'},
+      {q:'ما اسم الآلة الافتراضية التي تُنفّذ بايت كود جافا على أي نظام تشغيل؟', options:['JDK','JRE','JVM','JIT'], correct:2, explain:'JVM هي الآلة الافتراضية التي تُنفّذ البايت كود، وهي سبب قدرة جافا على العمل على أي نظام تشغيل.'},
+    ],
+    qaItems:[
+      { q:'اكتب كودًا يطلب من المستخدم إدخال اسم الطالب وكلمة المرور ثم يطبعهما.', code:`import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("أدخل اسم الطالب: ");
+        String name = input.nextLine();
+        System.out.print("أدخل كلمة المرور: ");
+        String password = input.nextLine();
+        System.out.println("الاسم: " + name);
+        System.out.println("كلمة المرور: " + password);
+    }
+}` },
+      { q:'اكتب كودًا يحسب مجموع رقمين يُدخلهما المستخدم.', code:`Scanner input = new Scanner(System.in);
+int a = input.nextInt();
+int b = input.nextInt();
+System.out.println("المجموع: " + (a + b));` },
+      { q:'اكتب كودًا يتحقق هل رقم زوجي أم فردي.', code:`int num = 7;
+if (num % 2 == 0) {
+    System.out.println("زوجي");
+} else {
+    System.out.println("فردي");
+}` },
+      { q:'اكتب كودًا يطبع الأرقام من 1 إلى 10.', code:`for (int i = 1; i <= 10; i++) {
+    System.out.println(i);
+}` },
+      { q:'اكتب دالة تحسب مضروب رقم (factorial).', code:`public static int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+// factorial(5) = 120` },
+      { q:'اكتب كودًا يجد أكبر رقم في مصفوفة.', code:`int[] numbers = {4, 9, 2, 7, 15, 3};
+int largest = numbers[0];
+for (int n : numbers) {
+    if (n > largest) largest = n;
+}
+System.out.println("أكبر رقم: " + largest);` },
+      { q:'اكتب كودًا يعكس نصًا.', code:`String text = "hello";
+String reversed = new StringBuilder(text).reverse().toString();
+System.out.println(reversed);` },
+      { q:'اكتب كلاسًا اسمه Student يخزّن الاسم والعمر مع دالة تطبع بياناته.', code:`class Student {
+    String name;
+    int age;
+
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    void display() {
+        System.out.println("الاسم: " + name + ", العمر: " + age);
+    }
+}
+
+Student s = new Student("سارة", 20);
+s.display();` },
+      { q:'اكتب كودًا يحسب عدد مرات تكرار كل حرف في نص باستخدام HashMap.', code:`import java.util.HashMap;
+
+String text = "hello";
+HashMap<Character, Integer> counts = new HashMap<>();
+for (char ch : text.toCharArray()) {
+    counts.put(ch, counts.getOrDefault(ch, 0) + 1);
+}
+System.out.println(counts);` },
+      { q:'اكتب كودًا يستخدم try/catch للتعامل مع خطأ القسمة على صفر.', code:`try {
+    int a = 0;
+    int result = 100 / a;
+    System.out.println(result);
+} catch (ArithmeticException e) {
+    System.out.println("لا يمكن القسمة على صفر");
+}` },
+    ]
+  },
+
+  c:{
+    name:'C',
+    videos:[
+      {id:'f1tjFecB0GA', title:'كورس تعلم لغة السي بكل بساطة للمبتدئين'},
+      {id:'oWMk6xdHwhc', title:'مقدمة لغة البرمجة C بالعربي للمبتدئين'},
+      {id:'8lGYaQXeviM', title:'تعلم لغة البرمجة C: مقدمة وتثبيت الأدوات'},
+      {id:'yjxGtk67IDk', title:'C Programming for beginners — تعلم لغة سي من الصفر'},
+    ],
+    summaryPages:[
+      { title:'مقدمة والانطلاقة', body:`
+        <h4>ما هي لغة C؟</h4>
+        <p>لغة C إحدى أقدم وأهم لغات البرمجة الإجرائية، طوّرها دينيس ريتشي عام 1972م. تُعتبر لغة منخفضة المستوى نسبيًا لأنها تمنحك تحكمًا مباشرًا بالذاكرة والعتاد، ولذلك تُبنى عليها أغلب اللغات الحديثة.</p>
+        <p>لا تحتوي C على إدارة تلقائية للذاكرة، فأنت من يقرر متى تُحجز الذاكرة ومتى تُحرَّر — وهذا يمنحها سرعة فائقة لكنه يتطلب دقة عالية.</p>
+        <h4>بنية أول برنامج</h4>
+        <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    printf("مرحبًا بالعالم\n");
+    return 0;
+}</code></pre>
+        <p>#include يُدرج ملف الرأس القياسي، والدالة main هي نقطة بداية كل برنامج C، وreturn 0 تُخبر النظام أن البرنامج انتهى دون أخطاء.</p>
+      `},
+      { title:'المتغيرات والإدخال والإخراج', body:`
+        <h4>المتغيرات وأنواع البيانات</h4>
+        <pre><code>int age = 25;
+float price = 19.99f;
+char grade = 'A';
+double pi = 3.14159;</code></pre>
+        <p>يجب تحديد نوع كل متغير عند تعريفه، ولا يمكن تغيير نوعه لاحقًا. double تحجز مساحة أكبر لدقة أعلى من float.</p>
+        <h4>الإدخال والإخراج</h4>
+        <pre><code>int age;
+printf("أدخل عمرك: ");
+scanf("%d", &amp;age);
+printf("عمرك هو %d\n", age);</code></pre>
+        <p>printf تطبع نصًا يحتوي محددات تنسيق مثل %d و%f و%s. أما scanf فتقرأ المدخلات وتخزّنها في عنوان المتغير مباشرة عبر الرمز &.</p>
+      `},
+      { title:'الجمل الشرطية والحلقات', body:`
+        <h4>الجمل الشرطية</h4>
+        <pre><code>int score = 75;
+if (score &gt;= 90) {
+    printf("ممتاز\n");
+} else if (score &gt;= 60) {
+    printf("ناجح\n");
+} else {
+    printf("راسب\n");
+}</code></pre>
+        <h4>الحلقات التكرارية</h4>
+        <pre><code>for (int i = 1; i &lt;= 5; i++) {
+    printf("التكرار رقم %d\n", i);
+}
+
+int count = 0;
+while (count &lt; 3) {
+    printf("count = %d\n", count);
+    count++;
+}</code></pre>
+      `},
+      { title:'الدوال والمصفوفات', body:`
+        <h4>الدوال</h4>
+        <pre><code>int square(int x) {
+    return x * x;
+}
+
+int main() {
+    int result = square(5); // result = 25
+    return 0;
+}</code></pre>
+        <p>يجب تحديد نوع القيمة المُرجَعة ونوع كل معامل، وهذا جزء من طبيعة C الصارمة في الأنواع.</p>
+        <h4>المصفوفات</h4>
+        <pre><code>int numbers[4] = {10, 20, 30, 40};
+printf("%d\n", numbers[0]); // 10
+
+for (int i = 0; i &lt; 4; i++) {
+    printf("%d\n", numbers[i]);
+}</code></pre>
+        <p>حجم المصفوفة في C ثابت منذ إنشائها، والفهرسة تبدأ دائمًا من 0.</p>
+      `},
+      { title:'المؤشرات (Pointers)', body:`
+        <p>المؤشر هو أهم وأخطر مفهوم في C: متغير يخزّن عنوان مكان آخر في الذاكرة بدلًا من قيمة مباشرة.</p>
+        <pre><code>int x = 10;
+int *p = &amp;x;   // p يحمل عنوان x
+
+printf("%d\n", *p);  // 10
+*p = 20;       // تعديل x عبر المؤشر
+printf("%d\n", x);   // 20</code></pre>
+        <p>&x تعني "عنوان x"، وint *p يعرّف "مؤشرًا إلى int"، والعملية *p تسمى "فك المرجع" وتعني القيمة الموجودة في العنوان الذي يشير إليه p. هذا المفهوم هو أساس التعامل مع الذاكرة الديناميكية.</p>
+      `},
+      { title:'الذاكرة الديناميكية والـ struct', body:`
+        <h4>الذاكرة الديناميكية</h4>
+        <pre><code>#include &lt;stdlib.h&gt;
+
+int *arr = (int*) malloc(5 * sizeof(int));
+if (arr != NULL) {
+    arr[0] = 100;
+    free(arr); // تحرير الذاكرة إلزامي
+}</code></pre>
+        <p>malloc تحجز مساحة في الذاكرة الديناميكية وتُرجع مؤشرًا إليها، ويجب استدعاء free بعد الانتهاء لتفادي تسريب الذاكرة.</p>
+        <h4>الـ struct</h4>
+        <pre><code>struct Student {
+    char name[50];
+    int age;
+    float gpa;
+};
+
+struct Student s1 = {"سارة", 20, 3.8};
+printf("%s - %d\n", s1.name, s1.age);</code></pre>
+        <p>struct تسمح بتجميع عدة متغيرات من أنواع مختلفة تحت اسم واحد.</p>
+      `},
+      { title:'مفاهيم احترافية متقدمة', body:`
+        <h4>المؤشرات على الدوال (Function Pointers)</h4>
+        <pre><code>int add(int a, int b) { return a + b; }
+int subtract(int a, int b) { return a - b; }
+
+int main() {
+    int (*operation)(int, int) = add;
+    printf("%d\n", operation(5, 3)); // 8
+    operation = subtract;
+    printf("%d\n", operation(5, 3)); // 2
+    return 0;
+}</code></pre>
+        <p>يمكن لمتغير أن يخزّن عنوان دالة بأكملها، ثم يُستدعى عبره كأنه اسم الدالة نفسها. هذا يتيح تمرير سلوك مختلف كمعامل لدالة أخرى (Callbacks)، وهو أساس بناء أنظمة قابلة للتوسّع في C.</p>
+        <h4>معالجة البتات (Bit Manipulation)</h4>
+        <pre><code>unsigned char flags = 0;
+flags |= (1 &lt;&lt; 2);   // تشغيل البت رقم 2
+flags &amp;= ~(1 &lt;&lt; 2);  // إطفاء البت رقم 2
+int isSet = (flags &gt;&gt; 3) &amp; 1; // فحص البت رقم 3</code></pre>
+        <p>العمليات &lt;&lt; و&gt;&gt; تُزيح البتات يمينًا أو يسارًا، و| و&amp; وXOR تتحكم ببتات فردية مباشرة. هذا أساسي في البرمجة المدمجة (Embedded) للتحكم بسجلات العتاد (Hardware Registers) مباشرة.</p>
+        <h4>البرمجة متعددة الملفات وملفات الرأس المخصصة</h4>
+        <pre><code>// math_utils.h
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+int square(int x);
+#endif
+
+// math_utils.c
+#include "math_utils.h"
+int square(int x) { return x * x; }
+
+// main.c
+#include &lt;stdio.h&gt;
+#include "math_utils.h"
+int main() {
+    printf("%d\n", square(5));
+    return 0;
+}</code></pre>
+        <p>المشاريع الحقيقية تُقسَّم على عدة ملفات: ملف .h يحتوي "إعلانات" الدوال (توقيعها فقط)، وملف .c يحتوي تنفيذها الفعلي. حراس #ifndef/#define/#endif يمنعون تضمين نفس الملف أكثر من مرة بالخطأ (Include Guards).</p>
+        <h4>الماكرو والمعالج المسبق (Preprocessor Macros)</h4>
+        <pre><code>#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+#define PI 3.14159
+
+printf("%d\n", MAX(4, 9));       // 9
+printf("%.2f\n", PI * 2);        // 6.28</code></pre>
+        <p>#define تستبدل النص استبدالًا حرفيًا قبل الترجمة، فتصبح MAX(4,9) فعليًا ((4) > (9) ? (4) : (9)). مفيدة للثوابت والاختصارات، لكنها تحتاج حذرًا لأنها استبدال نصي وليست دالة حقيقية.</p>
+        <div class="note">هذه المفاهيم هي ما يميّز مبرمج C المحترف في مجالات الأنظمة المدمجة وأنظمة التشغيل — الخطوة التالية هي التمرّن على قراءة كود مفتوح المصدر حقيقي مثل أجزاء من نواة Linux.</div>
+      `},
+      { title:'أين تُستخدم ولماذا', body:`
+        <ul>
+          <li>أنظمة التشغيل (نواة Linux نفسها مكتوبة بلغة C).</li>
+          <li>البرمجيات المدمجة (Embedded Systems) والمتحكمات الدقيقة.</li>
+          <li>تطوير المحركات والأنظمة التي تتطلب أداءً فائقًا وتحكمًا كاملًا بالموارد.</li>
+        </ul>
+        <div class="note">تعلّم C يمنحك فهمًا عميقًا لكيفية عمل الحاسوب فعليًا من الذاكرة إلى المعالج، وهو أساس ممتاز قبل الانتقال لأي لغة أخرى مثل C++ أو حتى بايثون.</div>
+      `},
+    ],
+    quiz:[
+      {q:'ما اسم الدالة التي يبدأ منها تنفيذ أي برنامج C؟', options:['start()','main()','begin()','run()'], correct:1, explain:'main() هي نقطة البداية الإلزامية التي يبحث عنها نظام التشغيل لبدء تنفيذ أي برنامج C.'},
+      {q:'أي ملف رأس يحتوي دوال الإدخال والإخراج الأساسية مثل printf وscanf؟', options:['stdlib.h','stdio.h','string.h','math.h'], correct:1, explain:'stdio.h يحتوي على تعريفات دوال الإدخال والإخراج القياسية.'},
+      {q:'أي دالة تُستخدم لطباعة نص على الشاشة؟', options:['scanf','printf','echo','print'], correct:1, explain:'printf هي الدالة القياسية في C لطباعة نصوص وقيم منسّقة على الشاشة.'},
+      {q:'أي دالة تُستخدم لقراءة مدخلات من المستخدم؟', options:['printf','input','scanf','read'], correct:2, explain:'scanf تقرأ مدخلات المستخدم وتخزّنها في متغير محدد وفق نوع تنسيق معين.'},
+      {q:'ما الرمز الذي يجب أن ينتهي به كل جملة برمجية في C؟', options:[':',';','.','،'], correct:1, explain:'الفاصلة المنقوطة ; إلزامية في نهاية كل جملة برمجية في لغة C.'},
+      {q:'ما الصياغة الصحيحة لتعريف متغير صحيح x بقيمة 5؟', options:['int x = 5;','x = 5','var x = 5;','x := 5'], correct:0, explain:'C لغة قوية الكتابة، فيجب تحديد النوع صراحة عند التعريف.'},
+      {q:'ما محدد التنسيق المستخدم لطباعة عدد صحيح في printf؟', options:['%s','%d','%f','%c'], correct:1, explain:'%d هو محدد التنسيق المخصص للأعداد الصحيحة (int).'},
+      {q:'ما محدد التنسيق المستخدم لطباعة عدد عشري؟', options:['%d','%s','%f','%c'], correct:2, explain:'%f هو محدد التنسيق المخصص للأعداد ذات الفاصلة العشرية.'},
+      {q:'ما محدد التنسيق المستخدم لطباعة نص (سلسلة أحرف)؟', options:['%s','%d','%c','%n'], correct:0, explain:'%s يُستخدم لطباعة النصوص أو مصفوفات الأحرف في C.'},
+      {q:'ما الرمز الذي يُوضع قبل اسم متغير في scanf للإشارة إلى عنوانه؟', options:['*','&','#','@'], correct:1, explain:'الرمز & يعني "عنوان المتغير"، وscanf تحتاجه لتعرف أين تخزّن القيمة المُدخلة.'},
+      {q:'ما الصياغة الصحيحة لجملة شرطية if في C؟', options:['if condition then','if (condition) { }','if condition: ','when(condition){}'], correct:1, explain:'يتطلب وضع الشرط بين قوسين ثم كتلة التنفيذ بين أقواس معقوفة.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لحالة بديلة عن if؟', options:['elif','otherwise','else','or'], correct:2, explain:'else تُنفَّذ عندما لا يتحقق شرط if.'},
+      {q:'ما الصياغة الصحيحة لحلقة for تكرر من 0 حتى أقل من n؟', options:['for(int i=0;i<n;i++)','for i in range(n)','for(i=0,i<n,i++)','loop(0,n)'], correct:0, explain:'صياغة for: تهيئة؛ شرط؛ تحديث.'},
+      {q:'ما الصياغة الصحيحة لحلقة while؟', options:['while(condition){}','while condition do','loop while(condition)','repeat until(condition)'], correct:0, explain:'while(condition){ } تُكرر تنفيذ الكتلة طالما الشرط صحيحًا (غير صفر).'},
+      {q:'ما الفرق الجوهري بين حلقتي while وdo-while؟', options:['لا فرق بينهما إطلاقًا','do-while تُنفّذ جسم الحلقة مرة واحدة على الأقل قبل التحقق من الشرط','while أسرع دائمًا','do-while لا تدعم الشرط'], correct:1, explain:'do-while تفحص الشرط بعد تنفيذ الجسم أول مرة، فيُضمن تنفيذه مرة واحدة على الأقل.'},
+      {q:'ما الكلمة المفتاحية التي تُوقف تنفيذ حلقة فورًا؟', options:['stop','break','exit','halt'], correct:1, explain:'break تُنهي تنفيذ أقرب حلقة محيطة بها فورًا وتخرج منها بالكامل.'},
+      {q:'ما الكلمة المفتاحية التي تتخطى التكرار الحالي وتنتقل للتالي؟', options:['skip','next','continue','pass'], correct:2, explain:'continue تتجاهل باقي أوامر التكرار الحالي وتنتقل للتكرار التالي.'},
+      {q:'ما الصياغة الصحيحة لتعريف دالة تُرجع int اسمها add وتستقبل a وb؟', options:['int add(int a, int b){}','function add(a,b){}','def add(a,b):','add(a,b) -> int'], correct:0, explain:'يجب تحديد نوع القيمة المُرجعة ونوع كل معامل صراحة عند تعريف أي دالة في C.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لإرجاع قيمة من دالة؟', options:['return','yield','give','output'], correct:0, explain:'return تُنهي تنفيذ الدالة فورًا وتُعيد القيمة إلى الكود المستدعي.'},
+      {q:'ما الصياغة الصحيحة لتعريف مصفوفة من 5 أعداد صحيحة؟', options:['int arr[5];','int[] arr = new int[5];','array arr(5);','int arr = {5};'], correct:0, explain:'في C تُعرَّف المصفوفة بوضع الحجم بين قوسين مربعين بعد اسمها مباشرة.'},
+      {q:'كيف تصل إلى العنصر الأول في مصفوفة اسمها arr؟', options:['arr(0)','arr[1]','arr[0]','arr.first()'], correct:2, explain:'الفهرسة في مصفوفات C تبدأ من الصفر دائمًا.'},
+      {q:'ما هو المؤشر (Pointer) في لغة C؟', options:['متغير يخزّن نصًا فقط','متغير يخزّن عنوان مكان آخر في الذاكرة','دالة لإدخال البيانات','نوع من المصفوفات الثنائية'], correct:1, explain:'المؤشر متغير يحتفظ بعنوان خلية ذاكرة أخرى بدلًا من قيمة مباشرة.'},
+      {q:'ما الصياغة الصحيحة لتعريف مؤشر لعدد صحيح؟', options:['int *p;','pointer p;','int p*;','ptr<int> p;'], correct:0, explain:'النجمة * قبل اسم المتغير عند التعريف تعني أنه مؤشر إلى النوع المحدد.'},
+      {q:'ما الرمز المستخدم لـ"فك مرجع" مؤشر والوصول للقيمة التي يشير إليها؟', options:['&','*','#','@'], correct:1, explain:'وضع * قبل اسم المؤشر يُرجع القيمة المخزّنة في العنوان الذي يشير إليه.'},
+      {q:'أي دالة تُستخدم لتخصيص ذاكرة ديناميكيًا أثناء تشغيل البرنامج؟', options:['scanf()','malloc()','printf()','alloc()'], correct:1, explain:'malloc() تحجز مساحة في الذاكرة الديناميكية وتُرجع مؤشرًا إليها.'},
+      {q:'أي دالة تُستخدم لتحرير الذاكرة المخصصة بواسطة malloc؟', options:['clear()','delete()','free()','release()'], correct:2, explain:'free() تُعيد الذاكرة إلى النظام، ونسيان استدعائها يسبب تسريب ذاكرة.'},
+      {q:'أي ملف رأس يحتوي على دالتي malloc وfree؟', options:['stdio.h','stdlib.h','string.h','memory.h'], correct:1, explain:'stdlib.h يحتوي دوال إدارة الذاكرة الديناميكية.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لتعريف نوع بيانات مركّب يجمع عدة حقول؟', options:['struct','union','class','record'], correct:0, explain:'struct تسمح بتجميع عدة متغيرات من أنواع مختلفة تحت اسم واحد.'},
+      {q:'كيف تصل لحقل داخل struct عبر متغير عادي (وليس مؤشر)؟', options:['باستخدام السهم ->','باستخدام النقطة .','باستخدام القوسين ()','باستخدام العلامة #'], correct:1, explain:'تُستخدم النقطة . للوصول إلى حقول struct عبر متغير عادي.'},
+      {q:'كيف تصل لحقل داخل struct عبر مؤشر يشير إليه؟', options:['باستخدام النقطة .','باستخدام السهم ->','باستخدام القوسين ()','لا يمكن ذلك'], correct:1, explain:'تُستخدم السهم -> للوصول إلى حقول struct عبر مؤشر يشير إليه.'},
+      {q:'ما القيمة التي يُرجعها main() عادة للإشارة إلى نجاح تنفيذ البرنامج؟', options:['1','-1','0','null'], correct:2, explain:'إرجاع 0 من main() اصطلاح قياسي يُخبر النظام أن البرنامج انتهى دون أخطاء.'},
+      {q:'ما الفرق الأساسي بين المصفوفة الثابتة والذاكرة الديناميكية عبر malloc؟', options:['لا فرق بينهما إطلاقًا','حجم المصفوفة الثابتة يُحدد وقت الترجمة ولا يتغيّر، بينما malloc يسمح بتحديد الحجم وقت التشغيل','malloc أبطأ في كل الحالات','المصفوفة الثابتة تحتاج تحريرًا يدويًا أيضًا'], correct:1, explain:'malloc تمنحك مرونة تحديد الحجم أثناء تشغيل البرنامج، بخلاف المصفوفة الثابتة.'},
+      {q:'ما نوع البيانات المستخدم لتخزين حرف واحد في C؟', options:['string','char','text','letter'], correct:1, explain:'char هو النوع البدائي المخصص لتخزين حرف واحد فقط.'},
+      {q:'كيف تُعرَّف مصفوفة أحرف (نص) بحجم 20 خانة؟', options:['string name(20);','char name[20];','text name = 20;','str name{20};'], correct:1, explain:'لا يوجد نوع string جاهز في C، فالنصوص تُمثَّل كمصفوفة أحرف.'},
+      {q:'أي دالة تُستخدم لحساب طول نص (سلسلة أحرف)؟', options:['length()','strlen()','size()','count()'], correct:1, explain:'strlen() من مكتبة string.h تُرجع عدد الأحرف الفعلية في النص.'},
+      {q:'أي دالة تُستخدم لنسخ محتوى نص إلى آخر؟', options:['strcpy()','copy()','strcat()','strset()'], correct:0, explain:'strcpy(dest, src) تنسخ محتوى النص src إلى النص dest.'},
+      {q:'أي ملف رأس يحتوي دوال معالجة النصوص مثل strlen وstrcpy؟', options:['stdio.h','stdlib.h','string.h','ctype.h'], correct:2, explain:'string.h يحتوي مجموعة الدوال القياسية للتعامل مع النصوص.'},
+      {q:'ما الرمز المستخدم لكتابة تعليق متعدد الأسطر في C؟', options:['//...','/* ... */','# ... #','<!--...-->'], correct:1, explain:'/* */ تُستخدم لتعليق يمتد عبر أكثر من سطر.'},
+      {q:'ما ناتج sizeof(int) عادة على أغلب الأنظمة الحديثة؟', options:['2 بايت','4 بايت','8 بايت','1 بايت'], correct:1, explain:'sizeof(int) يُرجع عادة 4 بايت على معظم الأنظمة الحديثة.'},
+      {q:'أي مما يلي صحيح حول لغة C؟', options:['تحتوي على جامع قمامة تلقائي','هي لغة إجرائية توفر تحكمًا منخفض المستوى بالذاكرة والعتاد','لا يمكن استخدامها لكتابة أنظمة تشغيل','هي لغة كائنية التوجه بالكامل'], correct:1, explain:'C لغة إجرائية لا تحتوي على جامع قمامة، وتمنح تحكمًا مباشرًا بالذاكرة.'},
+    ],
+    qaItems:[
+      { q:'اكتب كودًا يطلب من المستخدم إدخال اسم الطالب وكلمة المرور ثم يطبعهما.', code:`#include <stdio.h>
+
+int main() {
+    char name[50], password[50];
+    printf("أدخل اسم الطالب: ");
+    scanf("%s", name);
+    printf("أدخل كلمة المرور: ");
+    scanf("%s", password);
+    printf("الاسم: %s\\n", name);
+    printf("كلمة المرور: %s\\n", password);
+    return 0;
+}` },
+      { q:'اكتب كودًا يحسب مجموع رقمين يُدخلهما المستخدم.', code:`int a, b;
+printf("أدخل الرقمين: ");
+scanf("%d %d", &a, &b);
+printf("المجموع: %d\\n", a + b);` },
+      { q:'اكتب كودًا يتحقق هل رقم زوجي أم فردي.', code:`int num = 7;
+if (num % 2 == 0) {
+    printf("زوجي\\n");
+} else {
+    printf("فردي\\n");
+}` },
+      { q:'اكتب كودًا يطبع الأرقام من 1 إلى 10.', code:`for (int i = 1; i <= 10; i++) {
+    printf("%d\\n", i);
+}` },
+      { q:'اكتب دالة تحسب مضروب رقم (factorial).', code:`int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+// factorial(5) = 120` },
+      { q:'اكتب كودًا يجد أكبر رقم في مصفوفة.', code:`int numbers[] = {4, 9, 2, 7, 15, 3};
+int largest = numbers[0];
+for (int i = 1; i < 6; i++) {
+    if (numbers[i] > largest) largest = numbers[i];
+}
+printf("أكبر رقم: %d\\n", largest);` },
+      { q:'اكتب دالة تعكس نصًا باستخدام مؤشرات.', code:`#include <string.h>
+
+void reverseStr(char *str) {
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; i++) {
+        char temp = str[i];
+        str[i] = str[len - 1 - i];
+        str[len - 1 - i] = temp;
+    }
+}` },
+      { q:'اكتب struct اسمه Student يخزّن الاسم والعمر مع دالة تطبع بياناته.', code:`struct Student {
+    char name[50];
+    int age;
+};
+
+void display(struct Student s) {
+    printf("الاسم: %s, العمر: %d\\n", s.name, s.age);
+}
+
+struct Student s1 = {"سارة", 20};
+display(s1);` },
+      { q:'اكتب كودًا يخصص مصفوفة ديناميكيًا بحجم يدخله المستخدم ويملأها بالأصفار.', code:`#include <stdlib.h>
+
+int n;
+scanf("%d", &n);
+int *arr = (int*) calloc(n, sizeof(int));
+for (int i = 0; i < n; i++) {
+    printf("%d ", arr[i]);
+}
+free(arr);` },
+      { q:'اكتب كودًا يتحقق من القسمة على صفر قبل تنفيذها.', code:`int a = 10, b = 0;
+if (b == 0) {
+    printf("لا يمكن القسمة على صفر\\n");
+} else {
+    printf("الناتج: %d\\n", a / b);
+}` },
+    ]
+  },
+
+  cpp:{
+    name:'C++',
+    videos:[
+      {id:'07AC2Syf4Yg', title:'كورس شرح C++ متكامل في 5 ساعات'},
+      {id:'_aOGlsJufho', title:'شرح بالعربي للمبتدئين — C++'},
+      {id:'rYPv_3Ttpl4', title:'تعلم جميع أساسيات C++ في 45 دقيقة'},
+      {id:'tSQ-EU7sO2I', title:'الدرس الأول — دورة تعلم C++ من الصفر حتى الاحتراف'},
+    ],
+    summaryPages:[
+      { title:'مقدمة والانطلاقة', body:`
+        <h4>ما هي لغة C++؟</h4>
+        <p>C++ لغة برمجة طوّرها بيارن ستروستروب في مطلع الثمانينيات كامتداد للغة C، بإضافة دعم البرمجة كائنية التوجه مع الحفاظ على أداء قريب جدًا من C.</p>
+        <h4>بنية أول برنامج</h4>
+        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "مرحبًا بالعالم" &lt;&lt; endl;
+    return 0;
+}</code></pre>
+        <p>iostream مكتبة الإدخال/الإخراج القياسية. عامل الإدراج &lt;&lt; يُرسل القيمة إلى الشاشة، وendl ينتقل لسطر جديد.</p>
+      `},
+      { title:'المتغيرات والإدخال والإخراج', body:`
+        <h4>المتغيرات وأنواع البيانات</h4>
+        <pre><code>int age = 25;
+double price = 19.99;
+char grade = 'A';
+bool isActive = true;
+string name = "أحمد";</code></pre>
+        <p>C++ ورثت الأنواع البدائية من C وأضافت نوع string الجاهز والأكثر أمانًا للتعامل مع النصوص.</p>
+        <h4>الإدخال والإخراج</h4>
+        <pre><code>string name;
+cout &lt;&lt; "أدخل اسمك: ";
+cin &gt;&gt; name;
+cout &lt;&lt; "أهلًا بك " &lt;&lt; name &lt;&lt; endl;</code></pre>
+        <p>cin تقرأ من لوحة المفاتيح باستخدام عامل الاستخراج &gt;&gt;.</p>
+      `},
+      { title:'الجمل الشرطية والحلقات', body:`
+        <pre><code>int score = 75;
+if (score &gt;= 90) {
+    cout &lt;&lt; "ممتاز" &lt;&lt; endl;
+} else if (score &gt;= 60) {
+    cout &lt;&lt; "ناجح" &lt;&lt; endl;
+} else {
+    cout &lt;&lt; "راسب" &lt;&lt; endl;
+}
+
+for (int i = 1; i &lt;= 5; i++) {
+    cout &lt;&lt; "التكرار رقم " &lt;&lt; i &lt;&lt; endl;
+}</code></pre>
+      `},
+      { title:'الدوال والتحميل الزائد', body:`
+        <pre><code>int add(int a, int b) {
+    return a + b;
+}
+
+double add(double a, double b) {
+    return a + b;
+}
+
+// add(2, 3) تستدعي النسخة الأولى
+// add(2.5, 3.1) تستدعي النسخة الثانية تلقائيًا</code></pre>
+        <p>التحميل الزائد يسمح بتعريف أكثر من دالة بنفس الاسم طالما اختلفت أنواع أو عدد المعاملات.</p>
+      `},
+      { title:'البرمجة كائنية التوجه', body:`
+        <pre><code>class Animal {
+protected:
+    string name;
+public:
+    Animal(string n) : name(n) {}
+    virtual void makeSound() {
+        cout &lt;&lt; name &lt;&lt; " يصدر صوتًا" &lt;&lt; endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    Dog(string n) : Animal(n) {}
+    void makeSound() override {
+        cout &lt;&lt; name &lt;&lt; " ينبح" &lt;&lt; endl;
+    }
+};
+
+Animal* a = new Dog("ريكس");
+a-&gt;makeSound(); // ريكس ينبح
+delete a;</code></pre>
+        <p>الكلمة virtual تسمح بتعدد الأشكال: عند استدعاء makeSound عبر مؤشر من نوع Animal، يُنفَّذ فعليًا سلوك Dog.</p>
+      `},
+      { title:'إدارة الذاكرة ومكتبة STL', body:`
+        <h4>إدارة الذاكرة</h4>
+        <pre><code>int* p = new int(10);
+cout &lt;&lt; *p &lt;&lt; endl;
+delete p;
+
+int* arr = new int[5];
+delete[] arr;</code></pre>
+        <p>new تخصص ذاكرة وتستدعي الباني تلقائيًا، ويقابلها delete لتحرير كائن مفرد وdelete[] لتحرير مصفوفة.</p>
+        <h4>مكتبة STL</h4>
+        <pre><code>#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+vector&lt;int&gt; nums = {5, 2, 8, 1};
+nums.push_back(9);
+sort(nums.begin(), nums.end());</code></pre>
+        <p>vector هو المقابل الديناميكي للمصفوفة، وSTL توفر خوارزميات جاهزة مثل sort.</p>
+      `},
+      { title:'مفاهيم احترافية متقدمة', body:`
+        <h4>القوالب (Templates)</h4>
+        <pre><code>template &lt;typename T&gt;
+T maxValue(T a, T b) {
+    return (a &gt; b) ? a : b;
+}
+
+cout &lt;&lt; maxValue(3, 7) &lt;&lt; endl;       // 7
+cout &lt;&lt; maxValue(3.5, 2.1) &lt;&lt; endl;   // 3.5</code></pre>
+        <p>القالب يسمح بكتابة دالة أو كلاس واحد يعمل مع أي نوع بيانات (أعداد صحيحة، عشرية، حتى كائنات مخصصة) دون تكرار الكود، والمترجم يُولّد نسخة مناسبة لكل نوع يُستخدم فعليًا وقت الترجمة.</p>
+        <h4>المؤشرات الذكية (Smart Pointers)</h4>
+        <pre><code>#include &lt;memory&gt;
+
+unique_ptr&lt;int&gt; p1 = make_unique&lt;int&gt;(10);
+cout &lt;&lt; *p1 &lt;&lt; endl;
+// لا حاجة لـ delete — تُحرَّر الذاكرة تلقائيًا عند خروج p1 من النطاق
+
+shared_ptr&lt;int&gt; p2 = make_shared&lt;int&gt;(20);
+shared_ptr&lt;int&gt; p3 = p2; // كلاهما يشير لنفس القيمة، وتُعدّ المراجع تلقائيًا</code></pre>
+        <p>unique_ptr يملك الذاكرة وحده ويحرّرها تلقائيًا عند انتهاء عمره، بينما shared_ptr يسمح لعدة مؤشرات بمشاركة نفس الذاكرة وتحريرها فقط عندما لا يبقى أي مرجع لها. هذا يحل مشكلة نسيان delete التي تسبب تسريب الذاكرة في الإدارة اليدوية.</p>
+        <h4>تعبيرات Lambda في C++</h4>
+        <pre><code>#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+vector&lt;int&gt; nums = {5, 2, 8, 1, 9};
+sort(nums.begin(), nums.end(), [](int a, int b) {
+    return a &gt; b; // ترتيب تنازلي
+});
+
+for (int n : nums) cout &lt;&lt; n &lt;&lt; " ";</code></pre>
+        <p>[](int a, int b) { ... } هي دالة lambda مجهولة الاسم تُمرَّر مباشرة كمعامل، مفيدة جدًا مع دوال STL مثل sort لتخصيص سلوكها دون كتابة دالة منفصلة.</p>
+        <h4>دلالات النقل (Move Semantics) — نظرة سريعة</h4>
+        <pre><code>#include &lt;utility&gt;
+
+vector&lt;int&gt; createLargeVector() {
+    vector&lt;int&gt; v(1000, 42);
+    return v; // نقل بدل نسخ كامل بفضل move semantics
+}
+
+vector&lt;int&gt; data = std::move(createLargeVector());</code></pre>
+        <p>std::move يحوّل كائنًا إلى "قيمة يمكن نقلها" بدل نسخها بالكامل، فينقل الموارد الداخلية مباشرة ويوفر أداءً كبيرًا عند التعامل مع كائنات ضخمة كالمتجهات الكبيرة.</p>
+        <div class="note">هذه المفاهيم (القوالب، المؤشرات الذكية، Lambda، وMove Semantics) هي جوهر C++ الحديثة (C++11 وما بعدها) التي يعتمدها المحترفون في الصناعة بدل الأسلوب القديم اليدوي بالكامل.</div>
+      `},
+      { title:'أين تُستخدم ولماذا', body:`
+        <ul>
+          <li>محركات الألعاب (Unreal Engine مكتوب بلغة C++).</li>
+          <li>البرمجيات المالية عالية التردد والأنظمة الحساسة للتوقيت.</li>
+          <li>تطبيقات سطح المكتب الثقيلة والبرمجيات الهندسية والعلمية.</li>
+        </ul>
+        <div class="note">C++ تمنحك أساسًا قويًا في البرمجة كائنية التوجه مع فهم عميق لإدارة الذاكرة والأداء، وهي مطلوبة بقوة في مجالات الألعاب والأنظمة عالية الأداء.</div>
+      `},
+    ],
+    quiz:[
+      {q:'ما ملف الرأس الأساسي المستخدم للإدخال والإخراج في C++؟', options:['stdio.h','iostream','conio.h','fstream'], correct:1, explain:'iostream يوفر كائنات وأدوات الإدخال والإخراج مثل cin وcout.'},
+      {q:'أي كائن يُستخدم للطباعة على الشاشة في C++؟', options:['print','cin','cout','echo'], correct:2, explain:'cout هو الكائن القياسي المستخدم لإرسال البيانات إلى الشاشة.'},
+      {q:'أي كائن يُستخدم لقراءة مدخلات المستخدم؟', options:['cout','cin','input','scan'], correct:1, explain:'cin هو الكائن القياسي المستخدم لقراءة القيم المُدخلة من لوحة المفاتيح.'},
+      {q:'ما العامل المستخدم لإرسال قيمة إلى cout (الإدراج)؟', options:['>>','<<','->','=>'], correct:1, explain:'عامل الإدراج << يُرسل القيمة التي على يمينه إلى الكائن الذي على يساره.'},
+      {q:'ما العامل المستخدم لاستقبال قيمة من cin (الاستخراج)؟', options:['<<','>>','->','::'], correct:1, explain:'عامل الاستخراج >> يأخذ القيمة المُدخلة من cin ويضعها داخل المتغير على يمينه.'},
+      {q:'ما وظيفة السطر using namespace std;؟', options:['يمنع استخدام std','يسمح باستخدام عناصر مثل cout وcin مباشرة دون كتابة std:: قبلها','يستورد مكتبة جديدة','يُعرّف كلاسًا جديدًا'], correct:1, explain:'using namespace std; يجعل عناصر مساحة الاسم std متاحة مباشرة دون كتابة std:: في كل مرة.'},
+      {q:'ما الصياغة الصحيحة لتعريف متغير صحيح x بقيمة 5؟', options:['int x = 5;','x = 5','var x = 5;','x := 5'], correct:0, explain:'تتطلب C++ تحديد نوع المتغير صراحة عند تعريفه.'},
+      {q:'ما نوع البيانات الجاهز الأكثر أمانًا للتعامل مع النصوص في C++؟', options:['text','string','str','word'], correct:1, explain:'string كلاس جاهز يوفر تعاملًا أسهل وأكثر أمانًا مع النصوص مقارنة بمصفوفات char.'},
+      {q:'ما الصياغة الصحيحة لجملة شرطية if في C++؟', options:['if condition then','if (condition) { }','if condition: ','when(condition){}'], correct:1, explain:'صياغة if في C++ مطابقة للغة C.'},
+      {q:'ما الصياغة الصحيحة لحلقة for تكرر من 0 حتى أقل من n؟', options:['for(int i=0;i<n;i++)','for i in range(n)','for(i=0,i<n,i++)','loop(0,n)'], correct:0, explain:'صياغة for موروثة من C: تهيئة؛ شرط؛ تحديث.'},
+      {q:'ما الصياغة الصحيحة لحلقة while؟', options:['while(condition){}','while condition do','loop while(condition)','repeat until(condition)'], correct:0, explain:'while(condition){ } تُكرر تنفيذ الكتلة طالما الشرط صحيحًا.'},
+      {q:'ما الكلمة المفتاحية التي تُوقف تنفيذ حلقة فورًا؟', options:['stop','break','exit','halt'], correct:1, explain:'break تُنهي تنفيذ أقرب حلقة أو switch محيطة بها فورًا.'},
+      {q:'ما الكلمة المفتاحية التي تتخطى التكرار الحالي وتنتقل للتالي؟', options:['skip','next','continue','pass'], correct:2, explain:'continue تتجاهل باقي أوامر التكرار الحالي وتنتقل للتكرار التالي.'},
+      {q:'ما الصياغة الصحيحة لتعريف دالة تُرجع int اسمها add؟', options:['int add(int a, int b){}','function add(a,b){}','def add(a,b):','add(a,b) -> int'], correct:0, explain:'يجب تحديد نوع القيمة المُرجَعة ونوع كل معامل صراحة.'},
+      {q:'ما المقصود بالتحميل الزائد للدوال (Function Overloading)؟', options:['استدعاء دالة داخل نفسها','تعريف أكثر من دالة بنفس الاسم لكن باختلاف عدد أو نوع المعاملات','حذف دالة من البرنامج','تشغيل نفس الدالة في خيطين بالتوازي'], correct:1, explain:'التحميل الزائد يسمح بوجود عدة دوال بنفس الاسم طالما اختلفت قائمة المعاملات.'},
+      {q:'ما الكلمة المفتاحية لتعريف كلاس جديد في C++؟', options:['struct فقط','class','object','type'], correct:1, explain:'class هي الكلمة المفتاحية القياسية لتعريف كلاس في C++.'},
+      {q:'ما اسم الدالة الخاصة التي تُستدعى تلقائيًا عند إنشاء كائن جديد؟', options:['init()','الباني وله نفس اسم الكلاس','start()','build()'], correct:1, explain:'الباني له نفس اسم الكلاس ولا يُرجع قيمة، ويُستدعى تلقائيًا عند إنشاء كائن جديد.'},
+      {q:'ما مستوى الوصول الافتراضي لأعضاء class عند عدم تحديد أي مُحدِّد؟', options:['public','private','protected','static'], correct:1, explain:'أعضاء class تكون private افتراضيًا في C++.'},
+      {q:'ما مستوى الوصول الافتراضي لأعضاء struct عند عدم تحديد أي مُحدِّد؟', options:['private','protected','public','static'], correct:2, explain:'أعضاء struct تكون public افتراضيًا، وهذا الفرق الجوهري الوحيد مع class.'},
+      {q:'ما الصياغة المستخدمة لجعل كلاس Dog يرث وراثة عامة من كلاس Animal؟', options:['class Dog extends Animal','class Dog : public Animal','class Dog implements Animal','class Dog inherits Animal'], correct:1, explain:'C++ تستخدم النقطتين مع مستوى الوصول لتحقيق الوراثة، بخلاف extends في جافا.'},
+      {q:'ما الكلمة المفتاحية التي تسمح بتعدد الأشكال عبر إعادة تعريف دالة في كلاس مشتق؟', options:['virtual','static','final','abstract'], correct:0, explain:'virtual تسمح للكلاسات المشتقة بإعادة تعريف الدالة بحيث يُنفَّذ السلوك الصحيح حتى عبر مؤشر من النوع الأساسي.'},
+      {q:'ما الكلمة المستخدمة صراحة في الكلاس المشتق لتوضيح أن الدالة تُعيد تعريف دالة من الأب؟', options:['override','implements','redefine','extends'], correct:0, explain:'override كلمة اختيارية تخبر المترجم أن هذه الدالة تُعيد تعريف دالة virtual من الكلاس الأب.'},
+      {q:'ما العامل المستخدم لتخصيص ذاكرة لكائن جديد في C++؟', options:['malloc','new','alloc','create'], correct:1, explain:'new تخصص ذاكرة وتستدعي الباني المناسب تلقائيًا.'},
+      {q:'ما العامل المستخدم لتحرير ذاكرة كائن خُصص بـ new؟', options:['free','delete','remove','clear'], correct:1, explain:'delete تُحرر ذاكرة الكائن وتستدعي الهادم الخاص به إن وُجد.'},
+      {q:'ما الفرق الجوهري بين new في C++ وmalloc في C؟', options:['new تستدعي الباني تلقائيًا عند تخصيص الذاكرة للكائنات، بينما malloc تخصص ذاكرة خام فقط','لا فرق بينهما إطلاقًا','malloc أسرع في جميع الحالات','new متاحة فقط للأرقام'], correct:0, explain:'new مصممة للتعامل مع كائنات C++ فتخصص الذاكرة وتستدعي الباني المناسب.'},
+      {q:'ما اسم المكتبة القياسية التي توفر هياكل بيانات وخوارزميات جاهزة مثل vector وsort؟', options:['STL','JDK','NumPy','Boost الإلزامية'], correct:0, explain:'STL توفر هياكل بيانات جاهزة وخوارزميات مثل sort وfind.'},
+      {q:'ما نوع البيانات الديناميكي في STL المكافئ للمصفوفة القابلة للنمو؟', options:['array','vector','list فقط','set'], correct:1, explain:'vector هو المقابل الديناميكي للمصفوفة في C++، ينمو تلقائيًا.'},
+      {q:'أي دالة تُضيف عنصرًا جديدًا لنهاية vector اسمه v؟', options:['v.add(x)','v.append(x)','v.push_back(x)','v.insert_end(x)'], correct:2, explain:'push_back(x) هي الدالة القياسية لإضافة عنصر جديد إلى نهاية vector.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لالتقاط استثناء في C++؟', options:['except','catch','rescue','handle'], correct:1, explain:'catch تلتقط الاستثناء المُرمى داخل كتلة try المرتبطة بها.'},
+      {q:'ما الكتلة التي تحتوي الكود القابل لإطلاق خطأ (استثناء)؟', options:['catch','finally','try','risk'], correct:2, explain:'try تحتوي الكود الذي قد يُطلق استثناء.'},
+      {q:'ما الكلمة المستخدمة لإطلاق (رمي) استثناء يدويًا؟', options:['raise','throw','error','fail'], correct:1, explain:'throw تُستخدم لإطلاق استثناء يدويًا عند اكتشاف حالة غير متوقعة.'},
+      {q:'ما المقصود بمبدأ التغليف (Encapsulation)؟', options:['دمج عدة كلاسات في كلاس واحد','إخفاء التفاصيل الداخلية للكلاس والسماح بالوصول إليها فقط عبر دوال محددة','تكرار نفس الكود في أكثر من مكان','تحويل الكود إلى ملف تنفيذي'], correct:1, explain:'التغليف يحمي بيانات الكلاس بجعلها private ويوفر دوال عامة للتحكم بالوصول إليها.'},
+      {q:'ما المقصود بالتوريث المتعدد (Multiple Inheritance)؟', options:['أن يرث كلاس واحد من أكثر من كلاس أساسي في نفس الوقت','أن يرث كلاس واحد فقط من كلاس واحد','استدعاء دالة من كلاس آخر دون وراثة','تكرار تعريف نفس الكلاس مرتين'], correct:0, explain:'تسمح C++ بأن يرث الكلاس من أكثر من كلاس أساسي واحد في آن واحد.'},
+      {q:'ما الكلمة المفتاحية المستخدمة لتعريف ثابت لا يمكن تعديل قيمته؟', options:['final','const','fixed','static'], correct:1, explain:'const تجعل قيمة المتغير أو المعامل ثابتة لا يمكن تعديلها بعد تهيئتها الأولى.'},
+      {q:'ما عامل تحديد النطاق المستخدم للوصول لعضو معيّن ينتمي لكلاس أو مساحة اسم؟', options:['.','::','->','#'], correct:1, explain:'عامل :: يُستخدم للوصول إلى عضو ينتمي لكلاس أو مساحة اسم محددة، مثل std::cout.'},
+      {q:'ما اسم الدالة الخاصة التي تُستدعى تلقائيًا عند تدمير الكائن؟', options:['Constructor','Destructor (~ClassName)','Finalizer','Cleaner'], correct:1, explain:'الهادم له نفس اسم الكلاس مسبوقًا بعلامة ~، ويُستدعى تلقائيًا عند انتهاء عمر الكائن.'},
+      {q:'ما وظيفة وضع const قبل معامل دالة؟', options:['يمنع تعديل قيمة ذلك المعامل داخل جسم الدالة','يجعل الدالة أسرع تلقائيًا','يحذف المعامل بعد الاستخدام','يجعل المعامل إلزاميًا'], correct:0, explain:'وضع const قبل نوع المعامل يمنع الدالة من تعديل قيمته بالخطأ داخل جسمها.'},
+      {q:'ما امتداد ملفات الكود المصدري الأكثر شيوعًا في C++؟', options:['.c','.cpp','.cxx فقط','.cc فقط'], correct:1, explain:'.cpp هو الامتداد الأكثر شيوعًا لملفات الكود المصدري في C++.'},
+      {q:'ما الفرق العملي الوحيد بين struct وclass في C++؟', options:['لا يوجد فرق إطلاقًا','مستوى الوصول الافتراضي فقط (public في struct، private في class)','struct لا تدعم الدوال','class لا تدعم الوراثة'], correct:1, explain:'كلاهما يدعم نفس الإمكانيات، والفرق العملي الوحيد هو مستوى الوصول الافتراضي للأعضاء.'},
+      {q:'أي نوع من الحلقات ينفّذ جسمه مرة واحدة على الأقل قبل التحقق من الشرط؟', options:['for','while','do-while','foreach'], correct:2, explain:'do-while تُنفّذ جسم الحلقة أولًا ثم تتحقق من الشرط، فيُضمن تنفيذها مرة واحدة على الأقل.'},
+    ],
+    qaItems:[
+      { q:'اكتب كودًا يطلب من المستخدم إدخال اسم الطالب وكلمة المرور ثم يطبعهما.', code:`#include <iostream>
+using namespace std;
+
+int main() {
+    string name, password;
+    cout << "أدخل اسم الطالب: ";
+    cin >> name;
+    cout << "أدخل كلمة المرور: ";
+    cin >> password;
+    cout << "الاسم: " << name << endl;
+    cout << "كلمة المرور: " << password << endl;
+    return 0;
+}` },
+      { q:'اكتب كودًا يحسب مجموع رقمين يُدخلهما المستخدم.', code:`int a, b;
+cin >> a >> b;
+cout << "المجموع: " << (a + b) << endl;` },
+      { q:'اكتب كودًا يتحقق هل رقم زوجي أم فردي.', code:`int num = 7;
+if (num % 2 == 0) {
+    cout << "زوجي" << endl;
+} else {
+    cout << "فردي" << endl;
+}` },
+      { q:'اكتب كودًا يطبع الأرقام من 1 إلى 10.', code:`for (int i = 1; i <= 10; i++) {
+    cout << i << endl;
+}` },
+      { q:'اكتب دالة تحسب مضروب رقم (factorial).', code:`int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+// factorial(5) = 120` },
+      { q:'اكتب كودًا يجد أكبر رقم في vector.', code:`#include <vector>
+#include <algorithm>
+
+vector<int> numbers = {4, 9, 2, 7, 15, 3};
+int largest = *max_element(numbers.begin(), numbers.end());
+cout << "أكبر رقم: " << largest << endl;` },
+      { q:'اكتب كودًا يعكس نصًا.', code:`#include <algorithm>
+
+string text = "hello";
+reverse(text.begin(), text.end());
+cout << text << endl;` },
+      { q:'اكتب كلاسًا اسمه Student يخزّن الاسم والعمر مع دالة تطبع بياناته.', code:`class Student {
+public:
+    string name;
+    int age;
+    Student(string n, int a) : name(n), age(a) {}
+    void display() {
+        cout << "الاسم: " << name << ", العمر: " << age << endl;
+    }
+};
+
+Student s("سارة", 20);
+s.display();` },
+      { q:'اكتب كودًا يستخدم map لحساب عدد مرات تكرار كل حرف في نص.', code:`#include <map>
+
+string text = "hello";
+map<char, int> counts;
+for (char ch : text) {
+    counts[ch]++;
+}` },
+      { q:'اكتب كودًا يستخدم try/catch للتعامل مع خطأ القسمة على صفر.', code:`try {
+    int a = 10, b = 0;
+    if (b == 0) throw runtime_error("القسمة على صفر");
+    cout << a / b << endl;
+} catch (const exception& e) {
+    cout << "خطأ: " << e.what() << endl;
+}` },
+    ]
+  },
+};
+
+/* ---------------------------------------------------------
+   STATE
+--------------------------------------------------------- */
+const state = { lang: null, tool: null };
+const quizState = {};
+const summaryState = {};
+const qaState = {};
+LANGUAGES.forEach(l => {
+  quizState[l.key] = freshQuizState();
+  summaryState[l.key] = { page: 0 };
+  qaState[l.key] = {};
+});
+
+function freshQuizState(){
+  return { current:0, score:0, selected:null, finished:false };
+}
+
+/* ---------------------------------------------------------
+   RENDER: language grid
+--------------------------------------------------------- */
+const langGrid = document.getElementById('langGrid');
+LANGUAGES.forEach(lang => {
+  const card = document.createElement('div');
+  card.className = 'lang-card';
+  card.dataset.key = lang.key;
+  card.style.setProperty('--lc1', lang.c1);
+  card.style.setProperty('--lc2', lang.c2);
+  card.innerHTML = `
+    <div class="lang-icon">${lang.icon}</div>
+    <span class="lang-label">${lang.label}</span>
+  `;
+  card.addEventListener('click', () => selectLanguage(lang.key));
+  langGrid.appendChild(card);
+});
+
+function selectLanguage(key){
+  state.lang = key;
+  if(!state.tool) state.tool = 'videos';
+  const lang = LANGUAGES.find(l => l.key === key);
+  document.body.style.setProperty('--c1', lang.c1);
+  document.body.style.setProperty('--c2', lang.c2);
+  document.querySelectorAll('.lang-card').forEach(c=>{
+    c.classList.toggle('active', c.dataset.key === key);
+  });
+  document.getElementById('toolsCaptionLang').textContent = CONTENT[key].name;
+  document.getElementById('toolsSection').hidden = false;
+  renderTools();
+  renderContent();
+  document.getElementById('toolsSection').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ---------------------------------------------------------
+   RENDER: tools row
+--------------------------------------------------------- */
+const toolsGrid = document.getElementById('toolsGrid');
+function renderTools(){
+  toolsGrid.innerHTML = '';
+  TOOLS.forEach(tool => {
+    const btn = document.createElement('button');
+    btn.className = 'tool-btn' + (state.tool === tool.key ? ' active' : '');
+    btn.innerHTML = `${ICONS[tool.icon]}<span>${tool.label}</span>`;
+    btn.addEventListener('click', () => {
+      state.tool = tool.key;
+      renderTools();
+      renderContent();
+    });
+    toolsGrid.appendChild(btn);
+  });
+}
+
+/* ---------------------------------------------------------
+   RENDER: content area dispatcher
+--------------------------------------------------------- */
+const contentArea = document.getElementById('contentArea');
+function renderContent(){
+  if(!state.lang || !state.tool){ contentArea.innerHTML=''; return; }
+  const data = CONTENT[state.lang];
+  if(state.tool === 'videos') return renderVideos(data);
+  if(state.tool === 'summary') return renderSummary(data);
+  if(state.tool === 'qa') return renderQA(data);
+  if(state.tool === 'quiz') return renderQuiz(data);
+}
+
+function renderVideos(data){
+  contentArea.innerHTML = `
+    <h3 class="panel-title">فيديوهات شرح <span class="accent">${data.name}</span></h3>
+    <p class="panel-sub">من الصفر وحتى نهاية الأساسيات — أفضل شروحات ${data.name} باللغة العربية</p>
+    <div class="video-grid">
+      ${data.videos.map(v => `
+        <a class="video-card" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+          <div class="thumb-wrap">
+            <img src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}" loading="lazy" onerror="this.style.display='none'">
+            <div class="play-badge">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="v-title">${v.title}</div>
+          <div class="v-open">مشاهدة على يوتيوب ↗</div>
+        </a>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ---------------------------------------------------------
+   SUMMARY (paginated)
+--------------------------------------------------------- */
+function renderSummary(data){
+  contentArea.innerHTML = `
+    <h3 class="panel-title">ملخّص لغة <span class="accent">${data.name}</span></h3>
+    <p class="panel-sub">من الصفر حتى نهاية الأساسيات — موزّعة على عدة صفحات</p>
+    <div class="summary-pager" id="summaryPager"></div>
+    <div class="summary-card" id="summaryBody"></div>
+    <div class="summary-nav">
+      <button id="prevPageBtn">◀ السابق</button>
+      <span class="page-indicator" id="pageIndicator"></span>
+      <button id="nextPageBtn">التالي ▶</button>
+    </div>
+  `;
+  paintSummaryPager(data);
+  paintSummaryBody(data);
+
+  document.getElementById('prevPageBtn').addEventListener('click', () => {
+    const st = summaryState[state.lang];
+    if(st.page > 0){ st.page--; paintSummaryPager(data); paintSummaryBody(data); }
+  });
+  document.getElementById('nextPageBtn').addEventListener('click', () => {
+    const st = summaryState[state.lang];
+    if(st.page < data.summaryPages.length - 1){ st.page++; paintSummaryPager(data); paintSummaryBody(data); }
+  });
+}
+
+function paintSummaryPager(data){
+  const st = summaryState[state.lang];
+  const pager = document.getElementById('summaryPager');
+  pager.innerHTML = data.summaryPages.map((p,i) =>
+    `<button class="${i===st.page?'active':''}" data-i="${i}">${i+1}. ${p.title}</button>`
+  ).join('');
+  pager.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      st.page = parseInt(btn.dataset.i);
+      paintSummaryPager(data);
+      paintSummaryBody(data);
+    });
+  });
+}
+
+function paintSummaryBody(data){
+  const st = summaryState[state.lang];
+  const page = data.summaryPages[st.page];
+  document.getElementById('summaryBody').innerHTML = page.body;
+  document.getElementById('pageIndicator').textContent = `صفحة ${st.page+1} من ${data.summaryPages.length}`;
+  document.getElementById('prevPageBtn').disabled = st.page === 0;
+  document.getElementById('nextPageBtn').disabled = st.page === data.summaryPages.length - 1;
+}
+
+/* ---------------------------------------------------------
+   Q&A (10 practical coding questions per language)
+--------------------------------------------------------- */
+function renderQA(data){
+  contentArea.innerHTML = `
+    <h3 class="panel-title">أسئلة وأجوبة في <span class="accent">${data.name}</span></h3>
+    <p class="panel-sub">10 تمارين برمجية عملية — فكّر بالحل أولًا، ثم اضغط لإظهاره</p>
+    <div class="qa-list" id="qaList"></div>
+  `;
+  paintQA(data);
+}
+
+function paintQA(data){
+  const list = document.getElementById('qaList');
+  list.innerHTML = data.qaItems.map((item, i) => `
+    <div class="qa-card">
+      <div class="qa-question"><span class="qa-number">${i+1}</span>${escapeHtml(item.q)}</div>
+      <button class="qa-toggle-btn" data-i="${i}">إظهار الحل</button>
+      <div class="qa-solution" id="qaSolution${i}">
+        <pre><code>${escapeHtml(item.code)}</code></pre>
+      </div>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.qa-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = btn.dataset.i;
+      const sol = document.getElementById('qaSolution' + i);
+      const isShown = sol.classList.toggle('show');
+      btn.textContent = isShown ? 'إخفاء الحل' : 'إظهار الحل';
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   QUIZ (40 questions)
+--------------------------------------------------------- */
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderQuiz(data){
+  contentArea.innerHTML = `
+    <h3 class="panel-title">اختبار <span class="accent">${data.name}</span></h3>
+    <p class="panel-sub">40 سؤال اختيار من متعدد مع تصحيح فوري وشرح لكل إجابة</p>
+    <div class="quiz-card" id="quizCard"></div>
+  `;
+  paintQuiz(data);
+}
+
+function paintQuiz(data){
+  const card = document.getElementById('quizCard');
+  const qs = quizState[state.lang];
+  const total = data.quiz.length;
+
+  if(qs.finished){
+    const pct = Math.round((qs.score/total)*100);
+    let verdict = 'أداء يحتاج مزيدًا من المراجعة';
+    if(pct >= 85) verdict = 'أداء ممتاز! أنت تتقن أساسيات هذه اللغة';
+    else if(pct >= 60) verdict = 'أداء جيد، استمر في المراجعة والتدرب';
+    card.innerHTML = `
+      <div class="quiz-result">
+        <div class="score">${qs.score} / ${total}</div>
+        <p>${verdict}</p>
+        <button class="quiz-retry" id="retryBtn">إعادة الاختبار</button>
+      </div>
+    `;
+    document.getElementById('retryBtn').addEventListener('click', () => {
+      quizState[state.lang] = freshQuizState();
+      paintQuiz(data);
+    });
+    return;
+  }
+
+  const q = data.quiz[qs.current];
+  const pct = ((qs.current)/total)*100;
+  card.innerHTML = `
+    <div class="quiz-progress">
+      <span class="count">${qs.current+1} / ${total}</span>
+      <div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div>
+      <span class="count">النقاط: ${qs.score}</span>
+    </div>
+    <p class="quiz-question">${escapeHtml(q.q)}</p>
+    <div class="quiz-options" id="quizOptions">
+      ${q.options.map((opt,i) => `<button class="quiz-opt" data-i="${i}">${escapeHtml(opt)}</button>`).join('')}
+    </div>
+    <div class="quiz-explain" id="quizExplain">${escapeHtml(q.explain)}</div>
+    <div class="quiz-footer"><button class="quiz-next" id="quizNext">${qs.current === total-1 ? 'إنهاء الاختبار' : 'السؤال التالي'}</button></div>
+  `;
+
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => handleAnswer(data, parseInt(btn.dataset.i)));
+  });
+}
+
+function handleAnswer(data, chosenIndex){
+  const qs = quizState[state.lang];
+  if(qs.selected !== null) return;
+  qs.selected = chosenIndex;
+  const q = data.quiz[qs.current];
+  if(chosenIndex === q.correct) qs.score++;
+
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach((btn,i) => {
+    btn.classList.add('locked');
+    if(i === q.correct) btn.classList.add('correct');
+    else if(i === chosenIndex) btn.classList.add('wrong');
+  });
+  document.getElementById('quizExplain').style.display = 'block';
+  document.getElementById('quizNext').style.display = 'inline-block';
+  document.getElementById('quizNext').addEventListener('click', () => {
+    qs.selected = null;
+    if(qs.current === data.quiz.length - 1){
+      qs.finished = true;
+    }else{
+      qs.current++;
+    }
+    paintQuiz(data);
+  }, { once:true });
+}
+
+/* auto-grow textarea */
+document.addEventListener('input', e => {
+  if(e.target.id === 'chatInput'){
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+  }
+});
+</script>
+</body>
+</html>
